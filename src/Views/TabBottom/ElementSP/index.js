@@ -2,7 +2,7 @@ import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 const ElementSP = (props) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} key={props.id}>
       <View style={styles.face}>
         <Image
           style={styles.img}

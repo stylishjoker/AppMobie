@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   container: {
     width: "50%",
     height: 35,
-    borderRadius: "25%",
+    borderRadius: 25,
   },
   text: {
     textAlign: "center",
