@@ -1,41 +1,57 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from "react-native";
+import { useNavigation } from "@react-navigation/core";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import ButtonImg from "../../components/ButtonImg";
 import Spacer from "../../components/Spacer";
 
-const Objs = [
-  {
-    id: 1,
-    name: "Cài đặt",
-    srcImg: require("../../assets/TabBarIcon/user.png"),
-    callback: () => {},
-  },
-  {
-    id: 2,
-    name: "Giỏ hàng",
-    srcImg: require("../../assets/TabBarIcon/user.png"),
-    callback: () => {},
-  },
-  {
-    id: 3,
-    name: "Quản lý tài khoản",
-    srcImg: require("../../assets/TabBarIcon/user.png"),
-    callback: () => {},
-  },
-  {
-    id: 4,
-    name: "Thông tin",
-    srcImg: require("../../assets/TabBarIcon/user.png"),
-    callback: () => {},
-  },
-  {
-    id: 5,
-    name: "Đăng xuất",
-    srcImg: require("../../assets/TabBarIcon/user.png"),
-    callback: () => {},
-  },
-];
 const Profile = () => {
+  const rootNav = useNavigation();
+  const Objs = [
+    {
+      id: 1,
+      name: "Cài đặt",
+      srcImg: require("../../assets/Icon/settings.png"),
+      callback: () => {},
+    },
+    {
+      id: 2,
+      name: "Giỏ hàng",
+      srcImg: require("../../assets/Icon/shopping-cart.png"),
+      callback: () => {},
+    },
+    {
+      id: 3,
+      name: "Quản lý tài khoản",
+      srcImg: require("../../assets/Icon/profile.png"),
+      callback: () => {},
+    },
+    {
+      id: 4,
+      name: "Thông tin",
+      srcImg: require("../../assets/Icon/info.png"),
+      callback: async () => {
+        const result = await AsyncStorage.getItem("user");
+        console.log(result);
+      },
+    },
+    {
+      id: 5,
+      name: "Đăng xuất",
+      srcImg: require("../../assets/Icon/logout.png"),
+      callback: () => {
+        AsyncStorage.removeItem("user");
+        rootNav.replace("Home");
+      },
+    },
+  ];
   return (
     <View style={styles.container}>
       <TouchableOpacity>
@@ -55,7 +71,7 @@ const Profile = () => {
               key={Obj.id}
               name={Obj.name}
               src={Obj.srcImg}
-              onPress={Obj.callback}
+              callback={Obj.callback}
             />
           );
         })}

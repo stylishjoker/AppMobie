@@ -22,39 +22,37 @@ import { setIsLoading, setUserToken } from "../../features/keepLogin";
 
 const Home = () => {
   const rootNav = useNavigation();
-  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(true);
   const account = useSelector((state) => state.login.account);
   const password = useSelector((state) => state.login.password);
+  const isLoading = useSelector((state) => state.keepLogin.isLoading);
 
+  const dispatch = useDispatch();
   useEffect(() => {
     axios({
       method: "get",
       url: `${BASE_URL}`,
     }).then((response) => setUser(response.data.user));
+    // setTimeout(handleKeepLogin, 1000);
+    handleKeepLogin();
   }, []);
   const storeData = async (value) => {
     try {
       const jsonValue = JSON.stringify(value);
-      console.log(jsonValue);
       await AsyncStorage.setItem("user", jsonValue);
     } catch (e) {
       console.log(e);
     }
   };
-  const getData = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem("user");
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  // if (getData) {
-  //   setLoading(false);
-  // }
 
-  // console.log(getUser);
+  const handleKeepLogin = async () => {
+    const result = await AsyncStorage.getItem("user");
+    return result !== null
+      ? dispatch(setIsLoading(false))
+      : dispatch(setIsLoading(true));
+  };
+  // handleKeepLogin();
+
   const handleLogin = async () => {
     if (user.account == account && user.password == password) {
       const NewUser = {
@@ -62,8 +60,7 @@ const Home = () => {
         password,
       };
       storeData(NewUser);
-      const getUser = AsyncStorage.getItem("user");
-      console.log(getUser);
+
       rootNav.navigate("HomeMain");
     } else {
       Alert.alert("Tài khoản hoặc mật khẩu không chính xác!!!");
@@ -71,7 +68,7 @@ const Home = () => {
   };
   return (
     <>
-      {loading ? (
+      {isLoading ? (
         <ImageBackground
           source={require("../../assets/background/Background001.png")}
           resizeMode="cover"

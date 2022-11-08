@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 
 import ElementSP from "./ElementSP";
-import WrapperSP from "./WrapperSP";
 const props = [
   {
     id: 1,
