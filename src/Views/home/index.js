@@ -19,6 +19,7 @@ import Spacer from "../../components/Spacer";
 import BASE_URL from "../../Api/config";
 import HomeMain from "../homeMain";
 import { setIsLoading, setUserToken } from "../../features/keepLogin";
+import LottieView from "lottie-react-native";
 
 const Home = () => {
   const rootNav = useNavigation();
@@ -26,6 +27,7 @@ const Home = () => {
   const account = useSelector((state) => state.login.account);
   const password = useSelector((state) => state.login.password);
   const isLoading = useSelector((state) => state.keepLogin.isLoading);
+  const [loader, setLoader] = useState(true);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -33,7 +35,6 @@ const Home = () => {
       method: "get",
       url: `${BASE_URL}`,
     }).then((response) => setUser(response.data.user));
-    // setTimeout(handleKeepLogin, 1000);
     handleKeepLogin();
   }, []);
   const storeData = async (value) => {
@@ -66,6 +67,7 @@ const Home = () => {
       Alert.alert("Tài khoản hoặc mật khẩu không chính xác!!!");
     }
   };
+
   return (
     <>
       {isLoading ? (

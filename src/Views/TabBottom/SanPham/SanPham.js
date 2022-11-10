@@ -1,6 +1,10 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-
-import ElementSP from "./ElementSP";
+import {
+  SCREEN_HEIGHT,
+  STATUS_BAR_HEIGHT,
+  WINDOW_HEIGHT,
+} from "../../../App/ScreenDefault";
+import ElementSP from "../ElementSP";
 const props = [
   {
     id: 1,
@@ -23,7 +27,7 @@ const props = [
 ];
 const SanPham = () => {
   return (
-    <ScrollView style={{ marginTop: 50 }}>
+    <ScrollView style={{ marginTop: STATUS_BAR_HEIGHT }}>
       <View style={styles.container}>
         <Text style={styles.text}>List sản phẩm</Text>
         {props.map((_element) => {

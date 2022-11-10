@@ -1,10 +1,10 @@
 import { Image, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import TrangChu from "../TabBottom/Trangchu";
-import SanPhamBanChay from "../TabBottom/Sanphambanchay";
-import SanPham from "../TabBottom/SanPham";
-import Profile from "../TabBottom/Profile";
+import TrangChu from "../TabBottom/TrangChu/Trangchu";
+import SanPhamBanChay from "../TabBottom/SanPhamBanChay/Sanphambanchay";
+import SanPham from "../TabBottom/SanPham/SanPham";
+import Profile from "../TabBottom/Profile/Profile";
 
 const TabComponents = [
   {

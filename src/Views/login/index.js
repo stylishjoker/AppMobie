@@ -1,7 +1,9 @@
 import React from "react";
 import { View, StyleSheet, TextInput } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
+
 import { setAccount, setPassword } from "../../features/login";
+
 const Login = () => {
   const account = useSelector((state) => state.login.account);
   const password = useSelector((state) => state.login.password);

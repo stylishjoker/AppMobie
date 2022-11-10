@@ -9,8 +9,8 @@ import {
 import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import ButtonImg from "../../components/ButtonImg";
-import Spacer from "../../components/Spacer";
+import ButtonImg from "../../../components/ButtonImg";
+import Spacer from "../../../components/Spacer";
 
 const Profile = () => {
   const rootNav = useNavigation();
@@ -18,25 +18,25 @@ const Profile = () => {
     {
       id: 1,
       name: "Cài đặt",
-      srcImg: require("../../assets/Icon/settings.png"),
+      srcImg: require("../../../assets/Icon/settings.png"),
       callback: () => {},
     },
     {
       id: 2,
       name: "Giỏ hàng",
-      srcImg: require("../../assets/Icon/shopping-cart.png"),
+      srcImg: require("../../../assets/Icon/shopping-cart.png"),
       callback: () => {},
     },
     {
       id: 3,
       name: "Quản lý tài khoản",
-      srcImg: require("../../assets/Icon/profile.png"),
+      srcImg: require("../../../assets/Icon/profile.png"),
       callback: () => {},
     },
     {
       id: 4,
       name: "Thông tin",
-      srcImg: require("../../assets/Icon/info.png"),
+      srcImg: require("../../../assets/Icon/info.png"),
       callback: async () => {
         const result = await AsyncStorage.getItem("user");
         console.log(result);
@@ -45,7 +45,7 @@ const Profile = () => {
     {
       id: 5,
       name: "Đăng xuất",
-      srcImg: require("../../assets/Icon/logout.png"),
+      srcImg: require("../../../assets/Icon/logout.png"),
       callback: () => {
         AsyncStorage.removeItem("user");
         rootNav.replace("Home");
@@ -58,7 +58,7 @@ const Profile = () => {
         <View style={styles.avatar}>
           <Image
             style={styles.Image}
-            source={require("../../assets/TabBarIcon/user.png")}
+            source={require("../../../assets/TabBarIcon/user.png")}
             resizeMode="stretch"
           />
         </View>
