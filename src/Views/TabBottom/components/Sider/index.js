@@ -5,12 +5,12 @@ import {
   Image,
   Dimensions,
   Text,
-  NativeEventEmitter,
 } from "react-native";
 import { useState } from "react";
 
-const { width } = Dimensions.get("window");
-const height = width * 0.6;
+// const { width } = Dimensions.get("window");
+const width = 350;
+const height = width * 0.5;
 const images = [
   require("../../../../assets/slider/banner1.jpg"),
   require("../../../../assets/slider/banner2.jpg"),
@@ -38,6 +38,7 @@ const Slider = () => {
         style={{ width, height }}
         showsHorizontalScrollIndicator={false}
         onScroll={(nativeEvent) => onChangeScroll(nativeEvent)}
+        scrollEventThrottle={16}
       >
         {images.map((image, index) => {
           return (
@@ -45,7 +46,7 @@ const Slider = () => {
               key={index}
               source={image}
               resizeMode="cover"
-              style={{ width, height }}
+              style={[{ width, height }, styles.Image]}
             />
           );
         })}
@@ -66,7 +67,8 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
-    // backgroundColor: "black",
+    justifyContent: "center",
+    alignItems: "center",
   },
   dot: {
     width,
@@ -79,10 +81,15 @@ const styles = StyleSheet.create({
   Text: {
     color: "#888",
     margin: 3,
+    fontSize: 10,
   },
   TextActive: {
     color: "white",
     margin: 3,
+    fontSize: 10,
+  },
+  Image: {
+    borderRadius: 25,
   },
 });
 export default Slider;

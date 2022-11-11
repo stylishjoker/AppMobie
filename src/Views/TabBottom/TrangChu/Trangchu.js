@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useSelector, useDispatch } from "react-redux";
 
 import { setInput } from "../../../features/SearchBar";
@@ -19,29 +20,36 @@ import {
 } from "../../../App/ScreenDefault";
 import SearchBar from "../components/Searchbar";
 import Slider from "../components/Sider";
+import ListOption from "../components/ListOption";
 
 const TrangChu = () => {
   const SearchInput = useSelector((state) => state.SearchResult.input);
   const dispatch = useDispatch();
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <View style={styles.container}>
-          <View style={styles.searchBar}>
-            <SearchBar
-              placeholder="Nhập thông tin sản phẩm"
-              value={SearchInput}
-              callback={(text) => {
-                dispatch(setInput(text));
-              }}
-            />
-          </View>
+    <LinearGradient colors={["#c42bb8", "white"]}>
+      <SafeAreaView style={styles.container}>
+        <View>
+          <Text style={styles.title}>Trang Chủ</Text>
+        </View>
+        <View style={styles.searchBar}>
+          <SearchBar
+            placeholder="Nhập thông tin sản phẩm"
+            value={SearchInput}
+            callback={(text) => {
+              dispatch(setInput(text));
+            }}
+          />
+        </View>
+        <ScrollView style={styles.Content}>
           <View style={styles.slider}>
             <Slider />
           </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+          <View style={styles.ListOption}>
+            <ListOption />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 const styles = StyleSheet.create({
@@ -49,6 +57,14 @@ const styles = StyleSheet.create({
     marginTop: STATUS_BAR_HEIGHT,
     display: "flex",
     flexDirection: "column",
+    height: WINDOW_HEIGHT,
+  },
+  title: {
+    fontSize: 20,
+    alignSelf: "center",
+    padding: 10,
+    color: "white",
+    fontWeight: "600",
   },
   searchBar: {
     width: "100%",
@@ -61,7 +77,14 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   slider: {
-    width: "80%",
+    marginTop: 20,
+  },
+  Content: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  ListOption: {
+    marginLeft: 15,
   },
 });
 export default TrangChu;
