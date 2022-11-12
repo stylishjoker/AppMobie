@@ -71,7 +71,7 @@ const ListOption = () => {
   const onChangeScroll = (event) => {
     const slide =
       ((event.nativeEvent.contentOffset.x * 0.126) / widthScrollBar) * 100;
-    if (slide !== widthScrollView && slide < 82.6) {
+    if (slide !== widthScrollView && slide <= widthScrollBar) {
       setWidthScrollView(slide);
     }
   };

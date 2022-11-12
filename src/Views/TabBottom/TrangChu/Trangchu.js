@@ -21,12 +21,13 @@ import {
 import SearchBar from "../components/Searchbar";
 import Slider from "../components/Sider";
 import ListOption from "../components/ListOption";
+import Product from "../components/Product";
 
 const TrangChu = () => {
   const SearchInput = useSelector((state) => state.SearchResult.input);
   const dispatch = useDispatch();
   return (
-    <LinearGradient colors={["#c42bb8", "white"]}>
+    <LinearGradient colors={["#c42bb8", "#eae1e1"]}>
       <SafeAreaView style={styles.container}>
         <View>
           <Text style={styles.title}>Trang Chủ</Text>
@@ -46,6 +47,18 @@ const TrangChu = () => {
           </View>
           <View style={styles.ListOption}>
             <ListOption />
+          </View>
+          <View style={styles.listProduct}>
+            <View style={styles.listProduct_left}>
+              <Product />
+              <Product />
+              <Product />
+            </View>
+            <View style={styles.listProduct_right}>
+              <Product />
+              <Product />
+              <Product />
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -86,5 +99,21 @@ const styles = StyleSheet.create({
   ListOption: {
     marginLeft: 15,
   },
+  listProduct: {
+    marginTop: 10,
+    width: "100%",
+    height: 300,
+    display: "flex",
+    flexDirection: "row",
+  },
+  listProduct_left: {
+    padding: 10,
+    width: "50%",
+  },
+  listProduct_right: {
+    padding: 10,
+    width: "50%",
+  },
 });
+
 export default TrangChu;
