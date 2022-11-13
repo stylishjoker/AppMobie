@@ -51,12 +51,8 @@ const TrangChu = () => {
           <View style={styles.listProduct}>
             <View style={styles.listProduct_left}>
               <Product />
-              <Product />
-              <Product />
             </View>
             <View style={styles.listProduct_right}>
-              <Product />
-              <Product />
               <Product />
             </View>
           </View>
@@ -70,7 +66,6 @@ const styles = StyleSheet.create({
     marginTop: STATUS_BAR_HEIGHT,
     display: "flex",
     flexDirection: "column",
-    height: WINDOW_HEIGHT,
   },
   title: {
     fontSize: 20,
@@ -95,6 +90,8 @@ const styles = StyleSheet.create({
   Content: {
     display: "flex",
     flexDirection: "column",
+    // height: WINDOW_HEIGHT,
+    // backgroundColor: "red",
   },
   ListOption: {
     marginLeft: 15,

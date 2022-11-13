@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Alert,
   ActivityIndicator,
+  Button,
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,15 +20,14 @@ import Spacer from "../../components/Spacer";
 import BASE_URL from "../../Api/config";
 import HomeMain from "../homeMain";
 import { setIsLoading, setUserToken } from "../../features/keepLogin";
-import LottieView from "lottie-react-native";
-
+import IntroApp from "../TabBottom/components/IntroApp";
 const Home = () => {
   const rootNav = useNavigation();
   const [user, setUser] = useState(true);
   const account = useSelector((state) => state.login.account);
   const password = useSelector((state) => state.login.password);
   const isLoading = useSelector((state) => state.keepLogin.isLoading);
-  const [loader, setLoader] = useState(true);
+  const [start, setStart] = useState(true);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -67,42 +67,45 @@ const Home = () => {
       Alert.alert("Tài khoản hoặc mật khẩu không chính xác!!!");
     }
   };
-
-  return (
-    <>
-      {isLoading ? (
-        <ImageBackground
-          source={require("../../assets/background/Background001.png")}
-          resizeMode="cover"
-          style={styles.image}
-        >
-          <View style={styles.container}>
-            <Text style={styles.text}>Welcome Back</Text>
-            <Spacer height="40" />
-            <Text style={styles.title}>Đăng nhập</Text>
-            <Spacer height="20" />
-            <Login />
-            <Spacer height="20" />
-            <NewButton
-              callback={handleLogin}
-              title="Đăng nhập"
-              bgColor="#333"
-              color="white"
-            />
-            <Spacer height="20" />
-            <NewButton
-              callback={() => rootNav.navigate("Register")}
-              title="Đăng ký"
-              bgColor="red"
-              color="white"
-            />
-          </View>
-        </ImageBackground>
-      ) : (
-        <HomeMain />
-      )}
-    </>
-  );
+  const StartApp = () => {
+    return (
+      <>
+        {start ? (
+          <IntroApp />
+        ) : (
+          // <Button onPress={() => setStart(!start)} title="click me" />
+          <ImageBackground
+            source={require("../../assets/background/Background001.png")}
+            resizeMode="cover"
+            style={styles.image}
+          >
+            <View style={styles.container}>
+              <Text style={styles.text}>Welcome Back</Text>
+              <Spacer height="40" />
+              <Text style={styles.title}>Đăng nhập</Text>
+              <Spacer height="20" />
+              <Login />
+              <Spacer height="20" />
+              <NewButton
+                callback={handleLogin}
+                title="Đăng nhập"
+                bgColor="#333"
+                color="white"
+              />
+              <Spacer height="20" />
+              <NewButton
+                callback={() => rootNav.navigate("Register")}
+                title="Đăng ký"
+                bgColor="red"
+                color="white"
+              />
+            </View>
+          </ImageBackground>
+        )}
+      </>
+    );
+  };
+  return <>{isLoading ? <StartApp /> : <HomeMain />}</>;
 };
 
 const styles = StyleSheet.create({
