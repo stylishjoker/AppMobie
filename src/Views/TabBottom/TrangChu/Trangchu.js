@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
-  TextInput,
-  Button,
   SafeAreaView,
-  TouchableOpacity,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
 
 import { setInput } from "../../../features/SearchBar";
+import BASE_URL from "../../../Api/config";
 import {
   SCREEN_HEIGHT,
   STATUS_BAR_HEIGHT,
@@ -22,10 +22,19 @@ import SearchBar from "../components/Searchbar";
 import Slider from "../components/Sider";
 import ListOption from "../components/ListOption";
 import Product from "../components/Product";
-
+import Spacer from "../../../components/Spacer";
 const TrangChu = () => {
-  const SearchInput = useSelector((state) => state.SearchResult.input);
   const dispatch = useDispatch();
+  const [products, setProducts] = useState(null);
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: `${BASE_URL}` + "/products",
+    }).then((response) => setProducts(response.data));
+  }, []);
+  const HandleClick = (id) => {
+    // Alert.alert(`${id}`);
+  };
   return (
     <LinearGradient colors={["#c42bb8", "#eae1e1"]}>
       <SafeAreaView style={styles.container}>
@@ -33,15 +42,9 @@ const TrangChu = () => {
           <Text style={styles.title}>Trang Chủ</Text>
         </View>
         <View style={styles.searchBar}>
-          <SearchBar
-            placeholder="Nhập thông tin sản phẩm"
-            value={SearchInput}
-            callback={(text) => {
-              dispatch(setInput(text));
-            }}
-          />
+          <SearchBar placeholder="Nhập thông tin sản phẩm" />
         </View>
-        <ScrollView style={styles.Content}>
+        <ScrollView style={styles.Content} showsVerticalScrollIndicator={false}>
           <View style={styles.slider}>
             <Slider />
           </View>
@@ -50,10 +53,46 @@ const TrangChu = () => {
           </View>
           <View style={styles.listProduct}>
             <View style={styles.listProduct_left}>
-              <Product />
+              {products ? (
+                Array.from(products).map((product, index) => {
+                  if (index % 2 == 0) {
+                    return (
+                      <Product
+                        callback={() => Alert.alert("hehe")}
+                        key={product.id}
+                        name={product.name}
+                        price={product.price}
+                        imgLink={product.imgLink}
+                        local={product.local}
+                      />
+                    );
+                  }
+                })
+              ) : (
+                <></>
+              )}
+              <Spacer height="100" />
             </View>
             <View style={styles.listProduct_right}>
-              <Product />
+              {products ? (
+                Array.from(products).map((product, index) => {
+                  if (index % 2 == 1) {
+                    return (
+                      <Product
+                        callback={HandleClick(product.id)}
+                        key={product.id}
+                        name={product.name}
+                        price={product.price}
+                        imgLink={product.imgLink}
+                        local={product.local}
+                      />
+                    );
+                  }
+                })
+              ) : (
+                <></>
+              )}
+              <Spacer height="100" />
             </View>
           </View>
         </ScrollView>
@@ -66,6 +105,8 @@ const styles = StyleSheet.create({
     marginTop: STATUS_BAR_HEIGHT,
     display: "flex",
     flexDirection: "column",
+    height: WINDOW_HEIGHT,
+    marginBottom: 100,
   },
   title: {
     fontSize: 20,
@@ -82,16 +123,18 @@ const styles = StyleSheet.create({
     borderTopWidth: 3,
     borderBottomWidth: 3,
     alignItems: "center",
-    padding: 5,
+    // padding: 5,
+    zIndex: 100,
   },
   slider: {
     marginTop: 20,
   },
   Content: {
+    width: "100%",
     display: "flex",
     flexDirection: "column",
-    // height: WINDOW_HEIGHT,
-    // backgroundColor: "red",
+    flex: 1,
+    height: "auto",
   },
   ListOption: {
     marginLeft: 15,
@@ -99,13 +142,13 @@ const styles = StyleSheet.create({
   listProduct: {
     marginTop: 10,
     width: "100%",
-    height: 300,
     display: "flex",
     flexDirection: "row",
   },
   listProduct_left: {
     padding: 10,
     width: "50%",
+    height: "100%",
   },
   listProduct_right: {
     padding: 10,

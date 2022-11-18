@@ -5,8 +5,11 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  Text,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { SCREEN_HEIGHT, SCREEN_WiDTH } from "../../../../App/ScreenDefault";
+
 const contents = [
   {
     id: 1,
@@ -34,42 +37,32 @@ const contents = [
     id: 4,
     linkImg: require("../../../../assets/IntroApp/search.png"),
     name: "Quick search",
-    content: "Quickly find product item",
+    content: "Quickly find product item you like the most",
     status: false,
   },
   {
     id: 5,
     linkImg: require("../../../../assets/IntroApp/welcome.png"),
     name: "Welcome to App",
-    content: "Let's go",
+    content: "",
     status: true,
   },
 ];
 
-const IntroApp = () => {
+const IntroApp = (props) => {
   const [dot, setDot] = useState(0);
-  //   const onChangeScroll = (event) => {
-  //     const slide = Math.ceil(
-  //       event.nativeEvent.contentOffset.x /
-  //         event.nativeEvent.layoutMeasurement.width
-  //     );
-  //     if (slide !== dot) {
-  //       setDot(slide);
-  //     }
-  //   };
+  const onChangeScroll = (event) => {
+    const slide = Math.ceil(
+      event.nativeEvent.contentOffset.x /
+        event.nativeEvent.layoutMeasurement.width
+    );
+    if (slide !== dot) {
+      setDot(slide);
+    }
+  };
   return (
-    <View
-      style={{
-        backgroundColor: "red",
-        height: 100,
-        width: 100,
-        marginTop: 100,
-      }}
-    >
-      <TouchableOpacity style={{ marginTop: 100 }}>
-        <Text>Clickme</Text>
-      </TouchableOpacity>
-      {/* <ScrollView
+    <>
+      <ScrollView
         pagingEnabled
         horizontal
         style={styles.container}
@@ -79,13 +72,31 @@ const IntroApp = () => {
       >
         {contents.map((element) => {
           return (
-            <LinearGradient colors={["red", "white"]}>
-              <Image source={element.linkImg} />
-              <Text>{element.name}</Text>
-              <Text>{element.content}</Text>
+            <LinearGradient
+              key={element.id}
+              colors={["#ff0a6c", "#2d27ff"]}
+              style={styles.content}
+            >
+              <Image style={styles.Image} source={element.linkImg} />
+              <Text style={[styles.Text, styles.title]}>{element.name}</Text>
+              <Text style={[styles.Text, styles.desc]}>{element.content}</Text>
               {element.status ? (
-                <TouchableOpacity onPress={props.callback}>
-                  <Text>Let's go </Text>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={props.callback}
+                >
+                  <Text
+                    style={
+                      ([styles.Text],
+                      { fontSize: 15, color: "white", marginRight: 10 })
+                    }
+                  >
+                    Let's Begin{" "}
+                  </Text>
+                  <Image
+                    style={{ width: 20, height: 20 }}
+                    source={require("../../../../assets/IntroApp/shuttle.png")}
+                  />
                 </TouchableOpacity>
               ) : (
                 <></>
@@ -102,16 +113,66 @@ const IntroApp = () => {
             </Text>
           );
         })}
-      </View> */}
-    </View>
+      </View>
+    </>
   );
 };
 const styles = StyleSheet.create({
   container: {
+    width: SCREEN_WiDTH,
+    height: SCREEN_HEIGHT,
+  },
+  dot: {
+    // width,
+    flexDirection: "row",
+    position: "absolute",
+    bottom: 100,
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  Text: {
+    color: "white",
+    margin: 3,
+    fontSize: 10,
+  },
+  TextActive: {
+    color: "#333",
+    margin: 3,
+    fontSize: 10,
+  },
+  Image: {
     width: 100,
     height: 100,
-    backgroundColor: "red",
   },
-  dot: {},
+  content: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    width: SCREEN_WiDTH,
+    height: SCREEN_HEIGHT,
+  },
+  title: {
+    fontSize: 25,
+    marginTop: 25,
+    marginBottom: 25,
+    textTransform: "capitalize",
+  },
+  desc: {
+    textAlign: "center",
+    fontSize: 14,
+    padding: 10,
+  },
+  button: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    width: 150,
+    height: 40,
+    backgroundColor: "#ff0a6c",
+    alignItems: "center",
+    borderRadius: 25,
+  },
 });
 export default IntroApp;

@@ -5,46 +5,30 @@ import {
   Text,
   ImageBackground,
   StyleSheet,
-  Alert,
-  ActivityIndicator,
-  Button,
+  Image,
+  TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import NewButton from "../../components/NewButton";
 import Login from "../login";
 import Spacer from "../../components/Spacer";
-import BASE_URL from "../../Api/config";
 import HomeMain from "../homeMain";
 import { setIsLoading, setUserToken } from "../../features/keepLogin";
 import IntroApp from "../TabBottom/components/IntroApp";
+import { startApp, keepLogin } from "../../App/store/selector";
+import { setStart } from "../../features/AppStart";
 const Home = () => {
   const rootNav = useNavigation();
-  const [user, setUser] = useState(true);
-  const account = useSelector((state) => state.login.account);
-  const password = useSelector((state) => state.login.password);
-  const isLoading = useSelector((state) => state.keepLogin.isLoading);
-  const [start, setStart] = useState(true);
 
+  const isLoading = useSelector(keepLogin);
+  const start = useSelector(startApp);
   const dispatch = useDispatch();
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `${BASE_URL}`,
-    }).then((response) => setUser(response.data.user));
     handleKeepLogin();
   }, []);
-  const storeData = async (value) => {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem("user", jsonValue);
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   const handleKeepLogin = async () => {
     const result = await AsyncStorage.getItem("user");
@@ -52,28 +36,12 @@ const Home = () => {
       ? dispatch(setIsLoading(false))
       : dispatch(setIsLoading(true));
   };
-  // handleKeepLogin();
-
-  const handleLogin = async () => {
-    if (user.account == account && user.password == password) {
-      const NewUser = {
-        account,
-        password,
-      };
-      storeData(NewUser);
-
-      rootNav.navigate("HomeMain");
-    } else {
-      Alert.alert("Tài khoản hoặc mật khẩu không chính xác!!!");
-    }
-  };
   const StartApp = () => {
     return (
       <>
         {start ? (
-          <IntroApp />
+          <IntroApp callback={() => dispatch(setStart(false))} />
         ) : (
-          // <Button onPress={() => setStart(!start)} title="click me" />
           <ImageBackground
             source={require("../../assets/background/Background001.png")}
             resizeMode="cover"
@@ -87,19 +55,21 @@ const Home = () => {
               <Login />
               <Spacer height="20" />
               <NewButton
-                callback={handleLogin}
-                title="Đăng nhập"
-                bgColor="#333"
-                color="white"
-              />
-              <Spacer height="20" />
-              <NewButton
                 callback={() => rootNav.navigate("Register")}
                 title="Đăng ký"
                 bgColor="red"
                 color="white"
               />
             </View>
+            <TouchableOpacity
+              style={styles.Back}
+              onPress={() => dispatch(setStart(true))}
+            >
+              <Image
+                source={require("../../assets/Icon/backButton.png")}
+                style={styles.backImg}
+              />
+            </TouchableOpacity>
           </ImageBackground>
         )}
       </>
@@ -130,6 +100,21 @@ const styles = StyleSheet.create({
     color: "white",
     textTransform: "uppercase",
     fontWeight: "600",
+  },
+  Back: {
+    position: "absolute",
+    width: 50,
+    height: 50,
+    backgroundColor: "white",
+    top: 50,
+    left: 20,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  backImg: {
+    width: 30,
+    height: 30,
   },
 });
 export default Home;

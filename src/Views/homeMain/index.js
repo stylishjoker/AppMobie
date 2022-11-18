@@ -5,6 +5,7 @@ import TrangChu from "../TabBottom/TrangChu/Trangchu";
 import SanPhamBanChay from "../TabBottom/SanPhamBanChay/Sanphambanchay";
 import SanPham from "../TabBottom/SanPham/SanPham";
 import Profile from "../TabBottom/Profile/Profile";
+import ShoppingCart from "../TabBottom/Cart";
 
 const TabComponents = [
   {
@@ -27,6 +28,12 @@ const TabComponents = [
   },
   {
     id: 4,
+    name: "Giỏ hàng",
+    component: ShoppingCart,
+    srcImg: require("../../assets/Icon/shopping-cart.png"),
+  },
+  {
+    id: 5,
     name: "Cá nhân",
     component: Profile,
     srcImg: require("../../assets/TabBarIcon/user.png"),

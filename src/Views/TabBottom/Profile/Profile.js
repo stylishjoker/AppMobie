@@ -8,12 +8,16 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch } from "react-redux";
 
 import ButtonImg from "../../../components/ButtonImg";
 import Spacer from "../../../components/Spacer";
+import { setStart } from "../../../features/AppStart";
+import { startApp } from "../../../App/store/selector";
 
 const Profile = () => {
   const rootNav = useNavigation();
+  const dispatch = useDispatch();
   const Objs = [
     {
       id: 1,
@@ -37,16 +41,14 @@ const Profile = () => {
       id: 4,
       name: "Thông tin",
       srcImg: require("../../../assets/Icon/info.png"),
-      callback: async () => {
-        const result = await AsyncStorage.getItem("user");
-        console.log(result);
-      },
+      callback: () => {},
     },
     {
       id: 5,
       name: "Đăng xuất",
       srcImg: require("../../../assets/Icon/logout.png"),
       callback: () => {
+        dispatch(setStart(false));
         AsyncStorage.removeItem("user");
         rootNav.replace("Home");
       },

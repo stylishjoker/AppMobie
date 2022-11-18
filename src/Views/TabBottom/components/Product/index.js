@@ -1,26 +1,11 @@
-import {
-  View,
-  StyleSheet,
-  Image,
-  Text,
-  TouchableOpacity,
-  Dimensions,
-  Alert,
-} from "react-native";
-const props = {
-  id: 1,
-  linkImg: require("../../../../assets/slider/banner1.jpg"),
-  name: "quần áo",
-  price: "290000",
-  local: "Hà nội",
-  callback: () => Alert.alert("hehe"),
-};
-const win = Dimensions.get("window");
-const Product = () => {
+import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
+
+const border = 5;
+const Product = (props) => {
   return (
     <TouchableOpacity style={styles.container} onPress={props.callback}>
       <View style={styles.Face}>
-        <Image style={styles.Image} source={props.linkImg} />
+        <Image style={styles.Image} source={{ uri: props.imgLink }} />
       </View>
       <View style={styles.Info}>
         <Text style={styles.name}>{props.name}</Text>
@@ -32,30 +17,30 @@ const Product = () => {
 };
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 10,
+    marginBottom: border,
     width: "100%",
     backgroundColor: "white",
-    borderRadius: 10,
+    borderRadius: border,
     justifyContent: "center",
   },
 
   Face: {},
   Image: {
-    width: win,
+    width: "100%",
     height: 150,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderTopLeftRadius: border,
+    borderTopRightRadius: border,
   },
   Info: {
     padding: 10,
   },
   name: {
-    fontSize: 18,
+    fontSize: 15,
     color: "#333",
     textTransform: "capitalize",
   },
   price: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "700",
     color: "#ff5858",
   },

@@ -13,7 +13,7 @@ const ElementSP = (props) => {
       </View>
       <View style={styles.info}>
         <Text style={styles.name}>{props.name}</Text>
-        <Text style={styles.price}>{props.price}</Text>
+        <Text style={styles.price}>{props.price} đ</Text>
       </View>
     </TouchableOpacity>
   );
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 5,
     marginTop: 5,
+    alignSelf: "center",
   },
   face: {},
   info: {
