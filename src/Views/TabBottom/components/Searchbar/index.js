@@ -71,6 +71,7 @@ const SearchBar = (props) => {
     setHistory([]);
     AsyncStorage.removeItem("historySearch");
   };
+  console.log(products);
   return (
     <View style={styles.container}>
       <View style={styles.ImageBar}>

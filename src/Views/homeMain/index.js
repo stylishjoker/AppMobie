@@ -42,7 +42,31 @@ const TabComponents = [
 const HomeMain = () => {
   const tab = createBottomTabNavigator();
   return (
-    <tab.Navigator initialRouteName="TrangChu">
+    <tab.Navigator
+      initialRouteName="TrangChu"
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === "Home") {
+            iconName = focused ? "ios-home-sharp" : "ios-home-outline";
+          } else if (route.name === "Favourites") {
+            iconName = focused ? "ios-heart-sharp" : "ios-heart-outline";
+          }
+        },
+        tabBarActiveTintColor: "#58ceb2",
+        tabBarInactiveTintColor: "gray",
+        tabBarStyle: {
+          paddingVertical: 5,
+          borderTopLeftRadius: 15,
+          borderTopRightRadius: 15,
+          backgroundColor: "white",
+          position: "absolute",
+          height: 60,
+        },
+        tabBarLabelStyle: { paddingBottom: 3 },
+      })}
+    >
       {TabComponents.map((TabComponent) => {
         return (
           <tab.Screen
