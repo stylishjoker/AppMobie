@@ -123,8 +123,16 @@ const styles = StyleSheet.create({
     borderTopWidth: 3,
     borderBottomWidth: 3,
     alignItems: "center",
-    // padding: 5,
     zIndex: 100,
+    shadowColor: "#333",
+    shadowOffset: {
+      width: 0,
+      height: 9,
+    },
+    shadowOpacity: 0.48,
+    shadowRadius: 11.95,
+
+    elevation: 18,
   },
   slider: {
     marginTop: 20,

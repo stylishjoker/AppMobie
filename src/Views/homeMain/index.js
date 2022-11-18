@@ -46,23 +46,32 @@ const HomeMain = () => {
       initialRouteName="TrangChu"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
-
           if (route.name === "Home") {
             iconName = focused ? "ios-home-sharp" : "ios-home-outline";
           } else if (route.name === "Favourites") {
             iconName = focused ? "ios-heart-sharp" : "ios-heart-outline";
           }
         },
-        tabBarActiveTintColor: "#58ceb2",
+        tabBarActiveTintColor: "#FC007A",
         tabBarInactiveTintColor: "gray",
         tabBarStyle: {
+          display: "flex",
+          flexDirection: "row",
           paddingVertical: 5,
           borderTopLeftRadius: 15,
           borderTopRightRadius: 15,
           backgroundColor: "white",
           position: "absolute",
-          height: 60,
+          shadowColor: "#333",
+          shadowOffset: {
+            width: 0,
+            height: 9,
+          },
+          shadowOpacity: 0.48,
+          shadowRadius: 11.95,
+
+          elevation: 18,
+          justifyContent: "center",
         },
         tabBarLabelStyle: { paddingBottom: 3 },
       })}

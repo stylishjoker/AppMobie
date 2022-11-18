@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 5,
     borderBottomRColor: "black",
     borderRadius: 50,
-    // top: STATUS_BAR_HEIGHT,
+    top: "20%",
   },
   Image: {
     width: 100,
