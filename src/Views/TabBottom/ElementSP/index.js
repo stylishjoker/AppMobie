@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   name: {
-    fontSize: 17,
+    fontSize: 13,
     flex: 1,
     flexWrap: "wrap",
     color: "#333",

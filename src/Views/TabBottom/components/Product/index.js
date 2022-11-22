@@ -1,4 +1,5 @@
 import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
+import Spacer from "../../../../components/Spacer";
 
 const border = 5;
 const Product = (props) => {
@@ -7,8 +8,11 @@ const Product = (props) => {
       <View style={styles.Face}>
         <Image style={styles.Image} source={{ uri: props.imgLink }} />
       </View>
+      <Spacer height="150" />
       <View style={styles.Info}>
-        <Text style={styles.name}>{props.name}</Text>
+        <View style={{ flexDirection: "row", width: 150 }}>
+          <Text style={styles.name}>{props.name}</Text>
+        </View>
         <Text style={styles.price}>{props.price}đ</Text>
         <Text>{props.local}</Text>
       </View>
@@ -18,7 +22,7 @@ const Product = (props) => {
 const styles = StyleSheet.create({
   container: {
     marginBottom: border,
-    width: "100%",
+    width: 150,
     backgroundColor: "white",
     borderRadius: border,
     justifyContent: "center",
@@ -31,10 +35,15 @@ const styles = StyleSheet.create({
     shadowRadius: 11.95,
 
     elevation: 18,
-    marginTop: 10,
+    margin: 5,
   },
 
-  Face: {},
+  Face: {
+    position: "absolute",
+    top: 0,
+    width: 150,
+    height: 150,
+  },
   Image: {
     width: "100%",
     height: 150,
@@ -45,9 +54,11 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   name: {
-    fontSize: 15,
+    flexWrap: "wrap",
     color: "#333",
     textTransform: "capitalize",
+    width: "95%",
+    fontSize: 15,
   },
   price: {
     fontSize: 15,

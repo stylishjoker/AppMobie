@@ -1,24 +1,16 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Alert,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import ButtonImg from "../../../components/ButtonImg";
-import Spacer from "../../../components/Spacer";
 import { setStart } from "../../../features/AppStart";
-import { startApp } from "../../../App/store/selector";
 import { STATUS_BAR_HEIGHT } from "../../../App/ScreenDefault";
+import { SAVE_USER } from "../../../App/store/selector";
 
 const Profile = () => {
   const rootNav = useNavigation();
-  const dispatch = useDispatch();
+  const user = useSelector(SAVE_USER);
   const Objs = [
     {
       id: 1,
@@ -62,13 +54,13 @@ const Profile = () => {
           <Image
             style={styles.Image}
             source={{
-              uri: "https://scontent.fhan14-3.fna.fbcdn.net/v/t39.30808-1/309862836_804402590874121_9045085778156257386_n.jpg?stp=dst-jpg_p240x240&_nc_cat=109&ccb=1-7&_nc_sid=7206a8&_nc_ohc=jloLVoM1ThQAX8bFSyo&_nc_ht=scontent.fhan14-3.fna&oh=00_AfBUzQw0un2RyKoUuUjNneOsZpZ_9OMUeU97l8O9jJzo-g&oe=637CE13A",
+              uri: user.linkImg,
             }}
             resizeMode="stretch"
           />
         </View>
       </TouchableOpacity>
-      <Spacer height="120" />
+      <Text style={styles.fullname}>{user.fullname}</Text>
       <View style={styles.option}>
         {Objs.map((Obj) => {
           return (
@@ -113,8 +105,6 @@ const styles = StyleSheet.create({
     elevation: 18,
   },
   avatar: {
-    // position: "absolute",
-    // alignSelf: "center",
     padding: 10,
     borderBottomWidth: 5,
     borderBottomRColor: "black",
@@ -125,6 +115,11 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
+  },
+  fullname: {
+    fontSize: 40,
+    marginTop: 30,
+    fontWeight: "600",
   },
 });
 export default Profile;

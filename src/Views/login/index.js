@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import {
+  Alert,
   View,
   StyleSheet,
   TextInput,
@@ -12,22 +12,24 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/core";
 
 import { setAccount, setPassword } from "../../features/login";
+import { setUser } from "../../features/SaveUser";
 import Spacer from "../../components/Spacer";
 import NewButton from "../../components/NewButton";
-import BASE_URL from "../../Api/config";
-import { accountLogin, passwordLogin } from "../../App/store/selector";
+import {
+  accountLogin,
+  passwordLogin,
+  GET_USER,
+} from "../../App/store/selector";
+import { getUsers } from "../../features/GetUser";
 
 const Login = () => {
   const account = useSelector(accountLogin);
   const password = useSelector(passwordLogin);
   const dispatch = useDispatch();
-  const [user, setUser] = useState(true);
+  const user = useSelector(GET_USER);
   const rootNav = useNavigation();
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `${BASE_URL}` + "/users/1",
-    }).then((response) => setUser(response.data));
+    dispatch(getUsers());
   }, []);
   const storeData = async (value) => {
     try {
@@ -37,17 +39,20 @@ const Login = () => {
       console.log(e);
     }
   };
-  const handleLogin = async () => {
-    if (user.account == account && user.password == password) {
-      const NewUser = {
-        account,
-        password,
-      };
-      storeData(NewUser);
-
-      rootNav.navigate("HomeMain");
-    } else {
-      Alert.alert("Tài khoản hoặc mật khẩu không chính xác!!!");
+  const handleLogin = () => {
+    var login = false;
+    if (user) {
+      Array.from(user).forEach((item) => {
+        if (item.account == account && item.password == password) {
+          dispatch(setUser(item));
+          storeData(item);
+          login = true;
+          rootNav.navigate("HomeMain");
+        }
+      });
+      if (!login) {
+        Alert.alert("Tài khoản hoặc mật khẩu không chính xác");
+      }
     }
   };
   const handleAccount = (text) => {

@@ -13,7 +13,7 @@ import { SCREEN_HEIGHT, SCREEN_WiDTH } from "../../../../App/ScreenDefault";
 const contents = [
   {
     id: 1,
-    linkImg: require("../../../../assets/IntroApp/fashion.png"),
+    linkImg: require("../../../../assets/IntroApp/hacker.png"),
     name: "Browser product",
     content: "Welcome to our shop app Login and checkout our great product",
     status: false,
@@ -35,7 +35,7 @@ const contents = [
   },
   {
     id: 4,
-    linkImg: require("../../../../assets/IntroApp/search.png"),
+    linkImg: require("../../../../assets/IntroApp/research.png"),
     name: "Quick search",
     content: "Quickly find product item you like the most",
     status: false,
@@ -74,7 +74,7 @@ const IntroApp = (props) => {
           return (
             <LinearGradient
               key={element.id}
-              colors={["#ff0a6c", "#2d27ff"]}
+              colors={["#23262F", "white"]}
               style={styles.content}
             >
               <Image style={styles.Image} source={element.linkImg} />
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: 150,
     height: 40,
-    backgroundColor: "#ff0a6c",
+    backgroundColor: "#333",
     alignItems: "center",
     borderRadius: 25,
   },

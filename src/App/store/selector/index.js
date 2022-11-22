@@ -3,3 +3,7 @@ export const passwordLogin = (state) => state.login.password;
 export const startApp = (state) => state.StartApp.start;
 export const keepLogin = (state) => state.keepLogin.isLoading;
 export const searchResult = (state) => state.SearchResult.input;
+export const GET_USER = (state) => state.GetUser.idUser;
+export const SAVE_USER = (state) => state.SaveUser.user;
+export const LAPTOPS = (state) => state.GetLaptop.laptops;
+export const SCREENS = (state) => state.GetScreen.screens;

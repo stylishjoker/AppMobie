@@ -89,7 +89,7 @@ const SearchBar = (props) => {
         onChangeText={handleOnchange}
       />
       <LinearGradient
-        colors={["#f857a6", "#ff5858"]}
+        colors={["#23262F", "#999"]}
         style={styles.TouchableOpacity}
       >
         <TouchableOpacity onPress={handleClick}>
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     borderWidth: 2,
-    borderColor: "#F7C6C9",
+    borderColor: "#999",
   },
   TextInput: {
     flex: 5,
@@ -178,6 +178,10 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     borderRadius: 50,
     right: 0,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   ImageBar: {
     display: "flex",
@@ -187,9 +191,6 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   Text: {
-    lineHeight: 40,
-    textAlign: "center",
-    justifyContent: "center",
     fontWeight: "600",
     color: "white",
   },

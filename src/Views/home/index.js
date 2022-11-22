@@ -20,6 +20,8 @@ import { setIsLoading, setUserToken } from "../../features/keepLogin";
 import IntroApp from "../TabBottom/components/IntroApp";
 import { startApp, keepLogin } from "../../App/store/selector";
 import { setStart } from "../../features/AppStart";
+import { setUser } from "../../features/SaveUser";
+
 const Home = () => {
   const rootNav = useNavigation();
 
@@ -32,6 +34,8 @@ const Home = () => {
 
   const handleKeepLogin = async () => {
     const result = await AsyncStorage.getItem("user");
+    const user = await JSON.parse(result);
+    dispatch(setUser(user));
     return result !== null
       ? dispatch(setIsLoading(false))
       : dispatch(setIsLoading(true));

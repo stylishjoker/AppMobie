@@ -8,15 +8,17 @@ import {
 } from "react-native";
 import { useState } from "react";
 
-// const { width } = Dimensions.get("window");
-const width = 350;
+const widthScreen = Dimensions.get("window").width;
+const width = widthScreen * 0.98;
 const height = width * 0.5;
 const images = [
+  require("../../../../assets/slider/31-1.png"),
+  require("../../../../assets/slider/32-1.png"),
+  require("../../../../assets/slider/33-1.png"),
   require("../../../../assets/slider/banner1.jpg"),
   require("../../../../assets/slider/banner2.jpg"),
   require("../../../../assets/slider/banner3.jpg"),
   require("../../../../assets/slider/banner4.jpg"),
-  require("../../../../assets/slider/banner5.jpg"),
 ];
 
 const Slider = () => {
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   Image: {
-    borderRadius: 25,
+    borderRadius: 10,
   },
 });
 export default Slider;

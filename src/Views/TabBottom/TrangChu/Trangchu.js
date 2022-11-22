@@ -1,17 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  SafeAreaView,
-  Alert,
-} from "react-native";
+import { View, Text, StyleSheet, ScrollView, SafeAreaView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 
-import { setInput } from "../../../features/SearchBar";
 import BASE_URL from "../../../Api/config";
 import {
   SCREEN_HEIGHT,
@@ -21,22 +13,32 @@ import {
 import SearchBar from "../components/Searchbar";
 import Slider from "../components/Sider";
 import ListOption from "../components/ListOption";
-import Product from "../components/Product";
+import NewScrollView from "../components/NewScrollView";
+import { getLaptops } from "../../../features/GetLaptop";
+import { LAPTOPS, SCREENS } from "../../../App/store/selector";
+import { getScreens } from "../../../features/GetScreen";
 import Spacer from "../../../components/Spacer";
+
 const TrangChu = () => {
   const dispatch = useDispatch();
-  const [products, setProducts] = useState(null);
+  const laptops = useSelector(LAPTOPS);
+  const screens = useSelector(SCREENS);
+  const listProducts = [
+    {
+      title: "laptop",
+      obj: laptops,
+    },
+    {
+      title: "screen",
+      obj: screens,
+    },
+  ];
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `${BASE_URL}` + "/products",
-    }).then((response) => setProducts(response.data));
+    dispatch(getLaptops());
+    dispatch(getScreens());
   }, []);
-  const HandleClick = (id) => {
-    // Alert.alert(`${id}`);
-  };
   return (
-    <LinearGradient colors={["#c42bb8", "#eae1e1"]}>
+    <LinearGradient colors={["#23262F", "#333", "#999"]}>
       <SafeAreaView style={styles.container}>
         <View>
           <Text style={styles.title}>Trang Chủ</Text>
@@ -51,50 +53,16 @@ const TrangChu = () => {
           <View style={styles.ListOption}>
             <ListOption />
           </View>
-          <View style={styles.listProduct}>
-            <View style={styles.listProduct_left}>
-              {products ? (
-                Array.from(products).map((product, index) => {
-                  if (index % 2 == 0) {
-                    return (
-                      <Product
-                        callback={() => Alert.alert("hehe")}
-                        key={product.id}
-                        name={product.name}
-                        price={product.price}
-                        imgLink={product.imgLink}
-                        local={product.local}
-                      />
-                    );
-                  }
-                })
-              ) : (
-                <></>
-              )}
-              <Spacer height="100" />
-            </View>
-            <View style={styles.listProduct_right}>
-              {products ? (
-                Array.from(products).map((product, index) => {
-                  if (index % 2 == 1) {
-                    return (
-                      <Product
-                        callback={HandleClick(product.id)}
-                        key={product.id}
-                        name={product.name}
-                        price={product.price}
-                        imgLink={product.imgLink}
-                        local={product.local}
-                      />
-                    );
-                  }
-                })
-              ) : (
-                <></>
-              )}
-              <Spacer height="100" />
-            </View>
-          </View>
+          <>
+            {listProducts.map((item, index) => {
+              return (
+                <View key={index} style={styles.listProduct}>
+                  <NewScrollView products={item.obj} title={item.title} />
+                </View>
+              );
+            })}
+          </>
+          <Spacer height="100" />
         </ScrollView>
       </SafeAreaView>
     </LinearGradient>
@@ -109,9 +77,9 @@ const styles = StyleSheet.create({
     marginBottom: 100,
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     alignSelf: "center",
-    padding: 10,
+    padding: 5,
     color: "white",
     fontWeight: "600",
   },

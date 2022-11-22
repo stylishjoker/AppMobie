@@ -1,5 +1,5 @@
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
 import {
   View,
   Text,
@@ -15,16 +15,21 @@ import { useSelector, useDispatch } from "react-redux";
 import { STATUS_BAR_HEIGHT, SCREEN_HEIGHT } from "../../App/ScreenDefault";
 import NewButton from "../../components/NewButton";
 import Spacer from "../../components/Spacer";
-// import { StartApp } from "../../features/AppStart";
 import { setStart } from "../../features/AppStart";
 
 const Register = () => {
   const rootNav = useNavigation();
   const dispatch = useDispatch();
+  const [account, setAccount] = useState();
+  const [fullname, setFullname] = useState();
+  const [numberPhone, setNumberPhone] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
   const handleClick = () => {
     dispatch(setStart(false));
     rootNav.replace("Home");
   };
+  const handleRegist = () => {};
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity style={styles.back} onPress={handleClick}>
@@ -36,13 +41,44 @@ const Register = () => {
       <Spacer height="20" />
       <Text style={styles.title}>Đăng ký tài khoản</Text>
       <Spacer height="20" />
-      <TextInput style={styles.TextInput} placeholder="Nhập tên tài khoản" />
-      <TextInput style={styles.TextInput} placeholder="Nhập tên của bạn" />
-      <TextInput style={styles.TextInput} placeholder="Số điện thoại" />
-      <TextInput style={styles.TextInput} placeholder="Email" />
-      <TextInput style={styles.TextInput} placeholder="Mật khẩu" />
+      <TextInput
+        value={account}
+        onChangeText={(text) => setAccount(text)}
+        style={styles.TextInput}
+        placeholder="Nhập tên tài khoản"
+      />
+      <TextInput
+        value={fullname}
+        onChangeText={(text) => setFullname(text)}
+        style={styles.TextInput}
+        placeholder="Nhập tên của bạn"
+      />
+      <TextInput
+        keyboardType="number-pad"
+        value={numberPhone}
+        onChangeText={(text) => setNumberPhone(text)}
+        style={styles.TextInput}
+        placeholder="Số điện thoại"
+      />
+      <TextInput
+        value={email}
+        onChangeText={(text) => setEmail(text)}
+        style={styles.TextInput}
+        placeholder="Email"
+      />
+      <TextInput
+        value={password}
+        onChangeText={(text) => setPassword(text)}
+        style={styles.TextInput}
+        placeholder="Mật khẩu"
+      />
       <Spacer height="40" />
-      <NewButton title="Đăng ký" bgColor="#FF005B" color="white" />
+      <NewButton
+        title="Đăng ký"
+        bgColor="#FF005B"
+        color="white"
+        callback={handleRegist}
+      />
     </SafeAreaView>
   );
 };

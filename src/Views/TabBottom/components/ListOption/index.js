@@ -7,61 +7,49 @@ const widthScrollBar = width * 0.2;
 const listOption = [
   {
     id: 1,
-    name: "Ngân hàng",
-    require: require("../../../../assets/OptionBar/bank.png"),
+    name: "Máy tính",
+    require: require("../../../../assets/OptionBar/gaming.png"),
     callback: () => {},
   },
   {
     id: 2,
-    name: "Mỹ phẩm",
-    require: require("../../../../assets/OptionBar/cosmetic.png"),
+    name: "Màn hình",
+    require: require("../../../../assets/OptionBar/monitor.png"),
     callback: () => {},
   },
   {
     id: 3,
-    name: "Big sale",
-    require: require("../../../../assets/OptionBar/coupon.png"),
+    name: "Laptop",
+    require: require("../../../../assets/OptionBar/laptop.png"),
     callback: () => {},
   },
   {
     id: 4,
-    name: "Free ship",
-    require: require("../../../../assets/OptionBar/delivery.png"),
+    name: "Ram",
+    require: require("../../../../assets/OptionBar/ram.png"),
     callback: () => {},
   },
   {
     id: 5,
-    name: "Bán chạy",
-    require: require("../../../../assets/OptionBar/diamond.png"),
+    name: "CPU - Core",
+    require: require("../../../../assets/OptionBar/cpu.png"),
     callback: () => {},
   },
   {
     id: 6,
-    name: "Live",
-    require: require("../../../../assets/OptionBar/instagram-live.png"),
+    name: "VGA - Card đồ họa",
+    require: require("../../../../assets/OptionBar/vga.png"),
     callback: () => {},
   },
   {
     id: 7,
-    name: "Thời trang",
-    require: require("../../../../assets/OptionBar/mannequin.png"),
-    callback: () => {},
-  },
-  {
-    id: 8,
-    name: "Nạp tiền",
-    require: require("../../../../assets/OptionBar/save-money.png"),
-    callback: () => {},
-  },
-  {
-    id: 9,
-    name: "Shop xịn",
-    require: require("../../../../assets/OptionBar/shopping-bag.png"),
+    name: "Free Ship",
+    require: require("../../../../assets/OptionBar/free-shipping.png"),
     callback: () => {},
   },
 ];
 const ListOption = () => {
-  const [widthScrollView, setWidthScrollView] = useState();
+  const [widthScrollView, setWidthScrollView] = useState(10);
   const onChangeScroll = (event) => {
     const slide =
       ((event.nativeEvent.contentOffset.x *
@@ -69,7 +57,7 @@ const ListOption = () => {
         widthScrollBar) *
       100;
     if (slide !== widthScrollView && slide <= widthScrollBar) {
-      setWidthScrollView(slide);
+      setWidthScrollView(slide + 5);
     }
   };
   return (

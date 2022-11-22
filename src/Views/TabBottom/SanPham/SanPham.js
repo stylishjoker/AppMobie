@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 import {
   View,
   Text,
@@ -16,13 +17,25 @@ import {
   WINDOW_HEIGHT,
   SCREEN_WiDTH,
 } from "../../../App/ScreenDefault";
+import { LAPTOPS, SCREENS } from "../../../App/store/selector";
+import { getLaptops } from "../../../features/GetLaptop";
+import { getScreens } from "../../../features/GetScreen";
 import ElementSP from "../ElementSP";
 import BASE_URL from "../../../Api/config";
 import Header from "../components/Header";
 
 const SanPham = () => {
-  const [products, setProducts] = useState([]);
   const [selected, setSelected] = useState("Tất cả");
+  const dispatch = useDispatch();
+  const [products, setProducts] = useState([]);
+  const laptops = useSelector(LAPTOPS);
+  const screens = useSelector(SCREENS);
+  const listName = [laptops, screens];
+  const allProducts = [];
+  const GetAllProducts = async () => {
+    const value = await listName.map((item) => item);
+    const value1 = await value.map((item) => item);
+  };
   const data = [
     {
       key: 1,
@@ -30,23 +43,38 @@ const SanPham = () => {
     },
     {
       key: 2,
-      value: "Bộ",
+      value: "laptops",
     },
     {
       key: 3,
-      value: "Áo",
+      value: "screens",
     },
     {
       key: 4,
-      value: "Quần",
+      value: "computer",
     },
   ];
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `${BASE_URL}` + "/products",
-    }).then((response) => setProducts(response.data));
+    dispatch(getLaptops());
+    dispatch(getScreens());
+    GetAllProducts(allProducts);
   }, []);
+  useEffect(() => {
+    switch (selected) {
+      case "Tất cả":
+        setProducts([]);
+        break;
+      case "laptops":
+        setProducts(laptops);
+        break;
+      case "screens":
+        setProducts(screens);
+        break;
+      case "computer":
+        dispatch([]);
+        break;
+    }
+  }, [selected]);
   return (
     <SafeAreaView style={{ marginTop: STATUS_BAR_HEIGHT }}>
       <Header name="List sản phẩm" />
@@ -66,10 +94,10 @@ const SanPham = () => {
       <View style={{ height: WINDOW_HEIGHT - 190, width: SCREEN_WiDTH }}>
         <ScrollView style={styles.ScrollView} pagingEnabled>
           <View style={styles.container}>
-            {products.map((_element) => {
+            {products.map((_element, index) => {
               return (
                 <ElementSP
-                  key={_element.id}
+                  key={index}
                   name={_element.name}
                   price={_element.price}
                   url={_element.imgLink}
