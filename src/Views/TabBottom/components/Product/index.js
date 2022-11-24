@@ -1,10 +1,21 @@
 import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
+import { useSelector } from "react-redux";
+
+import { COLOR, BACK_GROUND } from "../../../../App/store/selector";
 import Spacer from "../../../../components/Spacer";
 
 const border = 5;
 const Product = (props) => {
+  const textColor = useSelector(COLOR);
+  const backgroundColor = useSelector(BACK_GROUND);
   return (
-    <TouchableOpacity style={styles.container} onPress={props.callback}>
+    <TouchableOpacity
+      style={[
+        styles.container,
+        { backgroundColor: backgroundColor ? "#999" : "white" },
+      ]}
+      onPress={props.callback}
+    >
       <View style={styles.Face}>
         <Image style={styles.Image} source={{ uri: props.imgLink }} />
       </View>
@@ -63,7 +74,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 15,
     fontWeight: "700",
-    color: "#ff5858",
+    color: "hsl(214, 89%, 52%)",
   },
 });
 export default Product;

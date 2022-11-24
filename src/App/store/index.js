@@ -7,6 +7,7 @@ import GetUser from "../../features/GetUser";
 import SaveUser from "../../features/SaveUser";
 import GetLaptop from "../../features/GetLaptop";
 import GetScreen from "../../features/GetScreen";
+import themeBackground from "../../features/Theme";
 
 export const store = configureStore({
   reducer: {
@@ -18,5 +19,6 @@ export const store = configureStore({
     SaveUser,
     GetLaptop,
     GetScreen,
+    themeBackground,
   },
 });

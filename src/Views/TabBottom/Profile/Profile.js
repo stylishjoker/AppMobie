@@ -1,28 +1,50 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  SafeAreaView,
+} from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
+import Modal from "react-native-modal";
 
 import ButtonImg from "../../../components/ButtonImg";
 import { setStart } from "../../../features/AppStart";
-import { STATUS_BAR_HEIGHT } from "../../../App/ScreenDefault";
-import { SAVE_USER } from "../../../App/store/selector";
+import { SAVE_USER, BACK_GROUND, COLOR } from "../../../App/store/selector";
+import ModalSetting from "./setting";
 
 const Profile = () => {
   const rootNav = useNavigation();
   const user = useSelector(SAVE_USER);
+  const [show, setShow] = useState(false);
+  const [showSetting, setShowSetting] = useState(false);
+  const textColor = useSelector(COLOR);
+  const backgroundColor = useSelector(BACK_GROUND);
+  const toggleModal = () => {
+    setShow(!show);
+  };
   const Objs = [
     {
       id: 1,
       name: "Cài đặt",
       srcImg: require("../../../assets/Icon/settings.png"),
-      callback: () => {},
+      callback: () => setShowSetting(!showSetting),
     },
     {
       id: 2,
       name: "Giỏ hàng",
       srcImg: require("../../../assets/Icon/shopping-cart.png"),
-      callback: () => {},
+      callback: () => {
+        return (
+          <View>
+            <Text>Hello word</Text>
+          </View>
+        );
+      },
     },
     {
       id: 3,
@@ -34,7 +56,7 @@ const Profile = () => {
       id: 4,
       name: "Thông tin",
       srcImg: require("../../../assets/Icon/info.png"),
-      callback: () => {},
+      callback: toggleModal,
     },
     {
       id: 5,
@@ -48,7 +70,12 @@ const Profile = () => {
     },
   ];
   return (
-    <View style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: backgroundColor ? "#555" : "#F5F4F7" },
+      ]}
+    >
       <TouchableOpacity>
         <View style={styles.avatar}>
           <Image
@@ -61,7 +88,12 @@ const Profile = () => {
         </View>
       </TouchableOpacity>
       <Text style={styles.fullname}>{user.fullname}</Text>
-      <View style={styles.option}>
+      <View
+        style={[
+          styles.option,
+          { backgroundColor: backgroundColor ? "#333" : "white" },
+        ]}
+      >
         {Objs.map((Obj) => {
           return (
             <ButtonImg
@@ -72,25 +104,39 @@ const Profile = () => {
             />
           );
         })}
+        <Modal
+          style={styles.Modal}
+          isVisible={show}
+          onBackdropPress={toggleModal}
+        >
+          <View style={styles.ModalContent}>
+            <Text style={styles.info}>
+              Cảm ơn khách hàng đã sử dựng ứng dựng của tôi{" "}
+            </Text>
+          </View>
+        </Modal>
+        <ModalSetting
+          show={showSetting}
+          callback={() => setShowSetting(!showSetting)}
+        />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    marginTop: STATUS_BAR_HEIGHT,
     width: "100%",
     height: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    backgroundColor: "#F5F4F7",
+    // backgroundColor: "#F5F4F7",
   },
   option: {
     position: "absolute",
     width: "90%",
     alignItems: "center",
-    backgroundColor: "white",
+    // backgroundColor: "white",
     borderRadius: 50,
     padding: 30,
     bottom: "15%",
@@ -120,6 +166,18 @@ const styles = StyleSheet.create({
     fontSize: 40,
     marginTop: 30,
     fontWeight: "600",
+  },
+  ModalContent: {
+    height: 100,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    padding: 10,
+  },
+  info: {
+    fontSize: 20,
+    alignSelf: "center",
   },
 });
 export default Profile;

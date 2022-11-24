@@ -26,9 +26,12 @@ export const GetScreen = createSlice({
 });
 const URL_LINK = BASE_URL + "/screen";
 export const getScreens = createAsyncThunk("screens/getscreens", async () => {
-  const res = await axios.get(URL_LINK);
-  const data = await res.data;
-  return data;
+  try {
+    const res = await axios.get(URL_LINK);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 export const { setScreen } = GetScreen.actions;

@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView, SafeAreaView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
 
-import BASE_URL from "../../../Api/config";
-import {
-  SCREEN_HEIGHT,
-  STATUS_BAR_HEIGHT,
-  WINDOW_HEIGHT,
-} from "../../../App/ScreenDefault";
+import { STATUS_BAR_HEIGHT, WINDOW_HEIGHT } from "../../../App/ScreenDefault";
 import SearchBar from "../components/Searchbar";
 import Slider from "../components/Sider";
 import ListOption from "../components/ListOption";
 import NewScrollView from "../components/NewScrollView";
 import { getLaptops } from "../../../features/GetLaptop";
-import { LAPTOPS, SCREENS } from "../../../App/store/selector";
+import {
+  LAPTOPS,
+  SCREENS,
+  COLOR,
+  BACK_GROUND,
+} from "../../../App/store/selector";
 import { getScreens } from "../../../features/GetScreen";
 import Spacer from "../../../components/Spacer";
 
@@ -23,6 +22,8 @@ const TrangChu = () => {
   const dispatch = useDispatch();
   const laptops = useSelector(LAPTOPS);
   const screens = useSelector(SCREENS);
+  const textColor = useSelector(COLOR);
+  const backgroundColor = useSelector(BACK_GROUND);
   const listProducts = [
     {
       title: "laptop",
@@ -38,10 +39,14 @@ const TrangChu = () => {
     dispatch(getScreens());
   }, []);
   return (
-    <LinearGradient colors={["#23262F", "#333", "#999"]}>
+    <LinearGradient
+      colors={backgroundColor ? ["#23262F", "#333", "#999"] : ["#fff", "#fff"]}
+    >
       <SafeAreaView style={styles.container}>
         <View>
-          <Text style={styles.title}>Trang Chủ</Text>
+          <Text style={[styles.title, { color: textColor ? "white" : "#333" }]}>
+            Trang Chủ
+          </Text>
         </View>
         <View style={styles.searchBar}>
           <SearchBar placeholder="Nhập thông tin sản phẩm" />
@@ -80,7 +85,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     alignSelf: "center",
     padding: 5,
-    color: "white",
     fontWeight: "600",
   },
   searchBar: {

@@ -26,9 +26,12 @@ export const GetLaptop = createSlice({
 });
 const URL_LINK = BASE_URL + "/laptops";
 export const getLaptops = createAsyncThunk("laptops/getlaptops", async () => {
-  const res = await axios.get(URL_LINK);
-  const data = await res.data;
-  return data;
+  try {
+    const res = await axios.get(URL_LINK);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 export const { setLaptop } = GetLaptop.actions;

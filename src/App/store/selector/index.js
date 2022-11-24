@@ -7,3 +7,5 @@ export const GET_USER = (state) => state.GetUser.idUser;
 export const SAVE_USER = (state) => state.SaveUser.user;
 export const LAPTOPS = (state) => state.GetLaptop.laptops;
 export const SCREENS = (state) => state.GetScreen.screens;
+export const COLOR = (state) => state.themeBackground.color;
+export const BACK_GROUND = (state) => state.themeBackground.background;

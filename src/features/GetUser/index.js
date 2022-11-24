@@ -37,16 +37,14 @@ const URL_LINK = BASE_URL + "/users";
 export const getUsers = createAsyncThunk("users/getusers", async () => {
   try {
     const res = await axios.get(URL_LINK);
-    const data = await res.data;
-    return data;
+    return res.data;
   } catch (error) {
     console.error(error);
   }
 });
 export const postUser = createAsyncThunk("users/postuser", async (value) => {
   const res = await axios.post(URL_LINK, value);
-  const data = await res.data;
-  return data;
+  return res.data;
 });
 export const { setIdUser } = GetUser.actions;
 export default GetUser.reducer;

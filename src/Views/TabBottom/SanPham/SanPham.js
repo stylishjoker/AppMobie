@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import {
   View,
-  Text,
   StyleSheet,
   ScrollView,
   SafeAreaView,
@@ -12,17 +10,21 @@ import {
 import { SelectList } from "react-native-dropdown-select-list";
 
 import {
-  SCREEN_HEIGHT,
   STATUS_BAR_HEIGHT,
   WINDOW_HEIGHT,
   SCREEN_WiDTH,
 } from "../../../App/ScreenDefault";
-import { LAPTOPS, SCREENS } from "../../../App/store/selector";
+import {
+  LAPTOPS,
+  SCREENS,
+  BACK_GROUND,
+  COLOR,
+} from "../../../App/store/selector";
 import { getLaptops } from "../../../features/GetLaptop";
 import { getScreens } from "../../../features/GetScreen";
 import ElementSP from "../ElementSP";
-import BASE_URL from "../../../Api/config";
 import Header from "../components/Header";
+import Spacer from "../../../components/Spacer";
 
 const SanPham = () => {
   const [selected, setSelected] = useState("Tất cả");
@@ -30,12 +32,9 @@ const SanPham = () => {
   const [products, setProducts] = useState([]);
   const laptops = useSelector(LAPTOPS);
   const screens = useSelector(SCREENS);
-  const listName = [laptops, screens];
-  const allProducts = [];
-  const GetAllProducts = async () => {
-    const value = await listName.map((item) => item);
-    const value1 = await value.map((item) => item);
-  };
+  const textColor = useSelector(COLOR);
+  const backgroundColor = useSelector(BACK_GROUND);
+  var allProducts = [];
   const data = [
     {
       key: 1,
@@ -57,12 +56,12 @@ const SanPham = () => {
   useEffect(() => {
     dispatch(getLaptops());
     dispatch(getScreens());
-    GetAllProducts(allProducts);
+    allProducts = [...laptops, ...screens];
   }, []);
   useEffect(() => {
     switch (selected) {
       case "Tất cả":
-        setProducts([]);
+        setProducts(allProducts);
         break;
       case "laptops":
         setProducts(laptops);
@@ -71,12 +70,14 @@ const SanPham = () => {
         setProducts(screens);
         break;
       case "computer":
-        dispatch([]);
+        setProducts(screens);
         break;
     }
   }, [selected]);
   return (
-    <SafeAreaView style={{ marginTop: STATUS_BAR_HEIGHT }}>
+    <SafeAreaView
+      style={{ backgroundColor: backgroundColor ? "#555" : "white" }}
+    >
       <Header name="List sản phẩm" />
       <View style={styles.option}>
         <SelectList
@@ -105,6 +106,7 @@ const SanPham = () => {
               );
             })}
           </View>
+          <Spacer height="80" />
         </ScrollView>
       </View>
     </SafeAreaView>

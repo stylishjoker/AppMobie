@@ -5,24 +5,26 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ScrollView,
   Image,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { SCREEN_WiDTH } from "../../../../App/ScreenDefault";
-import BASE_URL from "../../../../Api/config";
+import { SCREEN_WiDTH, SCREEN_HEIGHT } from "../../../../App/ScreenDefault";
 import ElementSP from "../../ElementSP";
 import TextSeach from "../TextSearch";
 import { searchResult } from "../../../../App/store/selector";
 import { setInput } from "../../../../features/SearchBar";
+import { getScreens } from "../../../../features/GetScreen";
+import { getLaptops } from "../../../../features/GetLaptop";
+import { LAPTOPS, SCREENS } from "../../../../App/store/selector";
 
 const specialName = [
-  "hàng xách tay",
-  "hàng đặc biệt",
-  "hàng công nghệ",
+  "laptops",
+  "screens",
+  "computer",
   "hàng công nghệ",
   "hàng công nghệ",
   "hàng công nghệ",
@@ -37,20 +39,20 @@ const storeData = async (value) => {
 };
 
 const SearchBar = (props) => {
+  var allProducts = [];
   const SearchInput = useSelector(searchResult);
   const dispatch = useDispatch();
   const [show, setShow] = useState(true);
   const [history, setHistory] = useState([]);
-  const [products, setProducts] = useState(null);
-  const [showSearch, setShowSearch] = useState(true);
+  const laptops = useSelector(LAPTOPS);
+  const screens = useSelector(SCREENS);
+  const [showSearch, setShowSearch] = useState([]);
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `${BASE_URL}` + "/products",
-    }).then((response) => setProducts(response.data));
-
+    dispatch(getLaptops());
+    dispatch(getScreens());
     displayHistorySearch();
   }, []);
+  allProducts = [...laptops, ...screens];
   const displayHistorySearch = async () => {
     const result = await AsyncStorage.getItem("historySearch");
     const resultSearch = await JSON.parse(result);
@@ -62,6 +64,14 @@ const SearchBar = (props) => {
   };
   const handleOnchange = (text) => {
     dispatch(setInput(text));
+    if (text) {
+      const newData = allProducts.filter(function (item) {
+        const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setShowSearch(newData);
+    }
   };
   const handleClick = () => {
     setHistory((prev) => [...prev, SearchInput]);
@@ -96,11 +106,11 @@ const SearchBar = (props) => {
           <Text style={styles.Text}>Search</Text>
         </TouchableOpacity>
       </LinearGradient>
-      <View style={show ? styles.noneSearchResult : styles.searchResult}>
-        {/* <View style={styles.result}>
-          {products ? (
-            Array.from(products).map((product, index) => {
-              if (index < 3) {
+      <ScrollView style={show ? styles.noneSearchResult : styles.searchResult}>
+        <View style={styles.result}>
+          {SearchInput ? (
+            Array.from(showSearch).map((product, index) => {
+              if (index < 4) {
                 return (
                   <ElementSP
                     key={product.id}
@@ -114,7 +124,7 @@ const SearchBar = (props) => {
           ) : (
             <></>
           )}
-        </View> */}
+        </View>
         <View
           style={
             history.length != 0 ? styles.historySearch : { display: "none" }
@@ -142,7 +152,7 @@ const SearchBar = (props) => {
             })}
           </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -160,6 +170,15 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     borderWidth: 2,
     borderColor: "#999",
+    shadowColor: "#333",
+    shadowOffset: {
+      width: 0,
+      height: 9,
+    },
+    shadowOpacity: 0.48,
+    shadowRadius: 11.95,
+
+    elevation: 18,
   },
   TextInput: {
     flex: 5,
@@ -198,19 +217,14 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 50,
     zIndex: 100,
-    height: 400,
+    height: SCREEN_HEIGHT / 2,
     width: SCREEN_WiDTH,
-    backgroundColor: "white",
     display: "flex",
     flexDirection: "column",
     left: 0,
+    backgroundColor: "white",
   },
   noneSearchResult: {
-    position: "absolute",
-    top: 50,
-    zIndex: 100,
-    height: 400,
-    width: SCREEN_WiDTH,
     display: "none",
   },
   historySearch: {},

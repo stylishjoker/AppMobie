@@ -2,7 +2,7 @@ import { Text, TouchableOpacity, Image, StyleSheet, View } from "react-native";
 
 const ButtonImg = (props) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={props.callback}>
+    <TouchableOpacity style={[styles.container]} onPress={props.callback}>
       <View style={styles.main}>
         <View style={styles.boxImg}>
           <Image style={styles.Image} source={props.src} resizeMode="cover" />
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     width: "100%",
-    backgroundColor: "white",
+    // backgroundColor: "white",
     justifyContent: "space-between",
     alignItems: "center",
     height: 50,
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   boxImg: {
     padding: 10,
-    backgroundColor: "#F5F4F7",
+    // backgroundColor: "#F5F4F7",
     borderRadius: 10,
   },
 });

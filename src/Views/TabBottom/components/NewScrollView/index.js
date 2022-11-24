@@ -6,19 +6,38 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { useSelector } from "react-redux";
 
 import Product from "../Product";
 import { SCREEN_WiDTH } from "../../../../App/ScreenDefault";
+import { COLOR, BACK_GROUND } from "../../../../App/store/selector";
 
 const NewScrollView = (props) => {
+  const textColor = useSelector(COLOR);
+  const backgroundColor = useSelector(BACK_GROUND);
   const handleClick = () => {};
   return (
     <View>
-      <View style={styles.container}>
-        <Text style={styles.title}>{props.title}</Text>
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: backgroundColor ? "#999" : "white",
+            borderColor: backgroundColor ? "none" : "#999",
+            borderWidth: backgroundColor ? 0 : 1,
+          },
+        ]}
+      >
+        <Text style={[styles.title, { color: textColor ? "white" : "#333" }]}>
+          {props.title}
+        </Text>
         <TouchableOpacity style={styles.TouchableOpacity}>
-          <Text style={{ color: "#999", marginRight: 10 }}>Xem tất cả</Text>
-          <Icon name="arrow-right" color={"#999"} />
+          <Text
+            style={{ color: textColor ? "white" : "#333", marginRight: 10 }}
+          >
+            Xem tất cả
+          </Text>
+          <Icon name="arrow-right" color={textColor ? "white" : "#333"} />
         </TouchableOpacity>
       </View>
       <ScrollView
@@ -48,7 +67,6 @@ const NewScrollView = (props) => {
 const styles = StyleSheet.create({
   container: {
     width: SCREEN_WiDTH,
-    backgroundColor: "white",
   },
   title: {
     fontSize: 20,
