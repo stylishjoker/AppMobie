@@ -9,12 +9,12 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Modal from "react-native-modal";
 
 import ButtonImg from "../../../components/ButtonImg";
 import { setStart } from "../../../features/AppStart";
-import { SAVE_USER, BACK_GROUND, COLOR } from "../../../App/store/selector";
+import { SAVE_USER, BACK_GROUND } from "../../../App/store/selector";
 import ModalSetting from "./setting";
 
 const Profile = () => {
@@ -22,7 +22,6 @@ const Profile = () => {
   const user = useSelector(SAVE_USER);
   const [show, setShow] = useState(false);
   const [showSetting, setShowSetting] = useState(false);
-  const textColor = useSelector(COLOR);
   const backgroundColor = useSelector(BACK_GROUND);
   const toggleModal = () => {
     setShow(!show);

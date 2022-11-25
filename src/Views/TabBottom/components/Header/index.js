@@ -1,7 +1,13 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useSelector } from "react-redux";
+
+import { STATUS_BAR_HEIGHT } from "../../../../App/ScreenDefault";
+import { SAVE_USER } from "../../../../App/store/selector";
+
 const heightHeader = 50;
 const Header = (props) => {
+  const user = useSelector(SAVE_USER);
   return (
     <LinearGradient
       start={{ x: 0.0, y: 0.25 }}
@@ -11,11 +17,7 @@ const Header = (props) => {
     >
       <Text style={styles.Text}>{props.name}</Text>
       <TouchableOpacity>
-        {/* <Image style={styles.Image} source={{ uri: props.linkImg }} /> */}
-        <Image
-          style={styles.Image}
-          source={{ uri: "https://reactnative.dev/img/tiny_logo.png" }}
-        />
+        <Image style={styles.Image} source={{ uri: user.linkImg }} />
       </TouchableOpacity>
     </LinearGradient>
   );
@@ -23,6 +25,7 @@ const Header = (props) => {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: STATUS_BAR_HEIGHT,
     width: "100%",
     height: heightHeader,
     display: "flex",

@@ -13,13 +13,9 @@ import {
   STATUS_BAR_HEIGHT,
   WINDOW_HEIGHT,
   SCREEN_WiDTH,
+  SCREEN_HEIGHT,
 } from "../../../App/ScreenDefault";
-import {
-  LAPTOPS,
-  SCREENS,
-  BACK_GROUND,
-  COLOR,
-} from "../../../App/store/selector";
+import { LAPTOPS, SCREENS, BACK_GROUND } from "../../../App/store/selector";
 import { getLaptops } from "../../../features/GetLaptop";
 import { getScreens } from "../../../features/GetScreen";
 import ElementSP from "../ElementSP";
@@ -30,11 +26,10 @@ const SanPham = () => {
   const [selected, setSelected] = useState("Tất cả");
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState("");
   const laptops = useSelector(LAPTOPS);
   const screens = useSelector(SCREENS);
-  const textColor = useSelector(COLOR);
   const backgroundColor = useSelector(BACK_GROUND);
-  var allProducts = [];
   const data = [
     {
       key: 1,
@@ -56,27 +51,48 @@ const SanPham = () => {
   useEffect(() => {
     dispatch(getLaptops());
     dispatch(getScreens());
-    allProducts = [...laptops, ...screens];
   }, []);
-  useEffect(() => {
+  const selectProduct = () => {
+    var newData;
     switch (selected) {
       case "Tất cả":
-        setProducts(allProducts);
+        newData = [...laptops, ...screens];
         break;
       case "laptops":
-        setProducts(laptops);
+        newData = laptops;
         break;
       case "screens":
-        setProducts(screens);
+        newData = screens;
         break;
       case "computer":
-        setProducts(screens);
+        newData = screens;
         break;
     }
+    return newData;
+  };
+  useEffect(() => {
+    setProducts(selectProduct());
   }, [selected]);
+  const onChangeText = (text) => {
+    setSearch(text);
+    if (text) {
+      const newData = products.filter(function (item) {
+        const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      console.log(newData);
+      setProducts(newData);
+    } else {
+      setProducts(selectProduct());
+    }
+  };
   return (
     <SafeAreaView
-      style={{ backgroundColor: backgroundColor ? "#555" : "white" }}
+      style={{
+        backgroundColor: backgroundColor ? "#555" : "white",
+        height: SCREEN_HEIGHT,
+      }}
     >
       <Header name="List sản phẩm" />
       <View style={styles.option}>
@@ -90,9 +106,14 @@ const SanPham = () => {
           data={data}
           save="value"
         />
-        <TextInput style={styles.TextInput} placeholder="Nhập tên sản phẩm" />
+        <TextInput
+          style={styles.TextInput}
+          value={search}
+          onChangeText={onChangeText}
+          placeholder="Nhập tên sản phẩm"
+        />
       </View>
-      <View style={{ height: WINDOW_HEIGHT - 190, width: SCREEN_WiDTH }}>
+      <View style={{ height: WINDOW_HEIGHT, width: SCREEN_WiDTH }}>
         <ScrollView style={styles.ScrollView} pagingEnabled>
           <View style={styles.container}>
             {products.map((_element, index) => {
