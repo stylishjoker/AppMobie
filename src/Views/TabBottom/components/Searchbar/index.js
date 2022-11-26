@@ -8,6 +8,7 @@ import {
   ScrollView,
   Image,
 } from "react-native";
+import { useNavigation } from "@react-navigation/core";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -19,7 +20,8 @@ import { searchResult } from "../../../../App/store/selector";
 import { setInput } from "../../../../features/SearchBar";
 import { getScreens } from "../../../../features/GetScreen";
 import { getLaptops } from "../../../../features/GetLaptop";
-import { LAPTOPS, SCREENS } from "../../../../App/store/selector";
+import { removeAccents } from "../../../../App/configStr";
+import { LAPTOPS, SCREENS, PRODUCTS } from "../../../../App/store/selector";
 
 const specialName = [
   "laptops",
@@ -39,20 +41,21 @@ const storeData = async (value) => {
 };
 
 const SearchBar = (props) => {
-  var allProducts = [];
-  const SearchInput = useSelector(searchResult);
   const dispatch = useDispatch();
+  const rootNav = useNavigation();
+  const SearchInput = useSelector(searchResult);
+  const products = useSelector(PRODUCTS);
   const [show, setShow] = useState(true);
   const [history, setHistory] = useState([]);
   const laptops = useSelector(LAPTOPS);
   const screens = useSelector(SCREENS);
   const [showSearch, setShowSearch] = useState([]);
+  var allProducts = [...laptops, ...screens];
   useEffect(() => {
     dispatch(getLaptops());
     dispatch(getScreens());
     displayHistorySearch();
   }, []);
-  allProducts = [...laptops, ...screens];
   const displayHistorySearch = async () => {
     const result = await AsyncStorage.getItem("historySearch");
     const resultSearch = await JSON.parse(result);
@@ -66,16 +69,21 @@ const SearchBar = (props) => {
     dispatch(setInput(text));
     if (text) {
       const newData = allProducts.filter(function (item) {
-        const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
-        const textData = text.toUpperCase();
+        const itemData = removeAccents(item.name)
+          ? removeAccents(item.name).toUpperCase()
+          : "".toUpperCase();
+        const textData = removeAccents(text).toUpperCase();
         return itemData.indexOf(textData) > -1;
       });
       setShowSearch(newData);
     }
   };
   const handleClick = () => {
-    setHistory((prev) => [...prev, SearchInput]);
-    storeData(history.concat(SearchInput));
+    if (searchResult) {
+      setHistory((prev) => [...prev, SearchInput]);
+      storeData(history.concat(SearchInput));
+      rootNav.navigate("SearchProducts");
+    }
   };
   const clearHistory = () => {
     setHistory([]);

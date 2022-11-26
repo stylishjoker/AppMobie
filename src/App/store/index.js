@@ -8,6 +8,7 @@ import SaveUser from "../../features/SaveUser";
 import GetLaptop from "../../features/GetLaptop";
 import GetScreen from "../../features/GetScreen";
 import themeBackground from "../../features/Theme";
+import GetProducts from "../../features/GetProducts";
 
 export const store = configureStore({
   reducer: {
@@ -20,5 +21,6 @@ export const store = configureStore({
     GetLaptop,
     GetScreen,
     themeBackground,
+    GetProducts,
   },
 });

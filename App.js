@@ -7,6 +7,7 @@ import Login from "./src/Views/login";
 import Register from "./src/Views/register";
 import Home from "./src/Views/home";
 import HomeMain from "./src/Views/homeMain";
+import SearchProducts from "./src/Views/SearchProducts";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,11 @@ export default function App() {
           <Stack.Screen
             name="HomeMain"
             component={HomeMain}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SearchProducts"
+            component={SearchProducts}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

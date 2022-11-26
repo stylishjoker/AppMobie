@@ -10,7 +10,6 @@ import {
 import { SelectList } from "react-native-dropdown-select-list";
 
 import {
-  STATUS_BAR_HEIGHT,
   WINDOW_HEIGHT,
   SCREEN_WiDTH,
   SCREEN_HEIGHT,
@@ -20,12 +19,13 @@ import { getLaptops } from "../../../features/GetLaptop";
 import { getScreens } from "../../../features/GetScreen";
 import ElementSP from "../ElementSP";
 import Header from "../components/Header";
-import Spacer from "../../../components/Spacer";
+import { removeAccents } from "../../../App/configStr";
 
 const SanPham = () => {
   const [selected, setSelected] = useState("Tất cả");
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
+  const [Productsfilter, setFilterProducts] = useState([]);
   const [search, setSearch] = useState("");
   const laptops = useSelector(LAPTOPS);
   const screens = useSelector(SCREENS);
@@ -48,10 +48,12 @@ const SanPham = () => {
       value: "computer",
     },
   ];
+
   useEffect(() => {
     dispatch(getLaptops());
     dispatch(getScreens());
   }, []);
+
   const selectProduct = () => {
     var newData;
     switch (selected) {
@@ -73,19 +75,25 @@ const SanPham = () => {
   useEffect(() => {
     setProducts(selectProduct());
   }, [selected]);
-  const onChangeText = (text) => {
-    setSearch(text);
+
+  const fillterProducts = (text, callback) => {
     if (text) {
       const newData = products.filter(function (item) {
-        const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
-        const textData = text.toUpperCase();
+        const itemData = removeAccents(item.name)
+          ? removeAccents(item.name).toLowerCase()
+          : "".toUpperCase();
+        const textData = removeAccents(text).toLowerCase();
         return itemData.indexOf(textData) > -1;
       });
-      console.log(newData);
-      setProducts(newData);
+      setFilterProducts(newData);
     } else {
-      setProducts(selectProduct());
+      setFilterProducts([]);
+      setProducts(callback);
     }
+  };
+  const onChangeText = (text) => {
+    setSearch(text);
+    fillterProducts(text, selectProduct());
   };
   return (
     <SafeAreaView
@@ -113,21 +121,28 @@ const SanPham = () => {
           placeholder="Nhập tên sản phẩm"
         />
       </View>
-      <View style={{ height: WINDOW_HEIGHT, width: SCREEN_WiDTH }}>
+      <View
+        style={{
+          height: SCREEN_HEIGHT - 150,
+          width: SCREEN_WiDTH,
+        }}
+      >
         <ScrollView style={styles.ScrollView} pagingEnabled>
           <View style={styles.container}>
-            {products.map((_element, index) => {
-              return (
-                <ElementSP
-                  key={index}
-                  name={_element.name}
-                  price={_element.price}
-                  url={_element.imgLink}
-                />
-              );
-            })}
+            {(search.length != 0 ? Productsfilter : products).map(
+              (_element, index) => {
+                return (
+                  <ElementSP
+                    key={index}
+                    name={_element.name}
+                    price={_element.price}
+                    url={_element.imgLink}
+                  />
+                );
+              }
+            )}
           </View>
-          <Spacer height="80" />
+          {/* <Spacer height="100" /> */}
         </ScrollView>
       </View>
     </SafeAreaView>

@@ -9,3 +9,4 @@ export const LAPTOPS = (state) => state.GetLaptop.laptops;
 export const SCREENS = (state) => state.GetScreen.screens;
 export const COLOR = (state) => state.themeBackground.color;
 export const BACK_GROUND = (state) => state.themeBackground.background;
+export const PRODUCTS = (state) => state.GetProducts.products;

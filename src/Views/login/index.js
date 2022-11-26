@@ -23,11 +23,11 @@ import {
 import { getUsers } from "../../features/GetUser";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const rootNav = useNavigation();
   const account = useSelector(accountLogin);
   const password = useSelector(passwordLogin);
-  const dispatch = useDispatch();
   const user = useSelector(GET_USER);
-  const rootNav = useNavigation();
   useEffect(() => {
     dispatch(getUsers());
   }, []);
