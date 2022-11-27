@@ -7,7 +7,9 @@ import {
   View,
   ScrollView,
   Image,
+  Button,
 } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/core";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSelector, useDispatch } from "react-redux";
@@ -23,6 +25,7 @@ import { getLaptops } from "../../../../features/GetLaptop";
 import { removeAccents } from "../../../../App/configStr";
 import { LAPTOPS, SCREENS } from "../../../../App/store/selector";
 import { setProducts } from "../../../../features/GetProducts";
+import NewButton from "../../../../components/NewButton";
 
 const specialName = [
   "laptops",
@@ -146,12 +149,12 @@ const SearchBar = (props) => {
               return <TextSeach key={index} name={item} />;
             })}
           </View>
-          <TouchableOpacity style={styles.clearHistory} onPress={clearHistory}>
+          <TouchableOpacity
+            style={styles.clearHistory}
+            onPress={() => console.log("hehe")}
+          >
             <Text>Xóa lịch sử tìm kiếm</Text>
-            <Image
-              style={{ width: 15, height: 15 }}
-              source={require("../../../../assets/Icon/delete.png")}
-            />
+            <Icon name="trash" />
           </TouchableOpacity>
         </View>
         <View style={styles.preview}>
@@ -258,6 +261,7 @@ const styles = StyleSheet.create({
     top: 5,
     alignItems: "center",
     opacity: 0.4,
+    backgroundColor: "red",
   },
 });
 export default SearchBar;

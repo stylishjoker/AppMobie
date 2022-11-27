@@ -9,6 +9,7 @@ import Home from "./src/Views/home";
 import HomeMain from "./src/Views/homeMain";
 import SearchProducts from "./src/Views/SearchProducts";
 import InfoProduct from "./src/Views/InfoProduct";
+import ManagerAccount from "./src/Views/MangerAccount";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,11 @@ export default function App() {
           <Stack.Screen
             name="InfoProduct"
             component={InfoProduct}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="AccountManager"
+            component={ManagerAccount}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

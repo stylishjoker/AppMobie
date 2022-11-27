@@ -8,6 +8,7 @@ import {
   TextInput,
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
+import { useNavigation } from "@react-navigation/core";
 
 import {
   WINDOW_HEIGHT,
@@ -20,6 +21,7 @@ import { getScreens } from "../../../features/GetScreen";
 import ElementSP from "../ElementSP";
 import Header from "../components/Header";
 import { removeAccents } from "../../../App/configStr";
+import { setInfoProduct } from "../../../features/GetProducts";
 
 const SanPham = () => {
   const [selected, setSelected] = useState("Tất cả");
@@ -30,6 +32,7 @@ const SanPham = () => {
   const laptops = useSelector(LAPTOPS);
   const screens = useSelector(SCREENS);
   const backgroundColor = useSelector(BACK_GROUND);
+  const rootNav = useNavigation();
   const data = [
     {
       key: 1,
@@ -76,6 +79,10 @@ const SanPham = () => {
     setProducts(selectProduct());
   }, [selected]);
 
+  const handleClick = (item) => {
+    dispatch(setInfoProduct(item));
+    rootNav.navigate("InfoProduct");
+  };
   const fillterProducts = (text, callback) => {
     if (text) {
       const newData = products.filter(function (item) {
@@ -133,6 +140,7 @@ const SanPham = () => {
               (_element, index) => {
                 return (
                   <ElementSP
+                    callback={() => handleClick(_element)}
                     key={index}
                     name={_element.name}
                     price={_element.price}

@@ -49,7 +49,7 @@ const Profile = () => {
       id: 3,
       name: "Quản lý tài khoản",
       srcImg: require("../../../assets/Icon/profile.png"),
-      callback: () => {},
+      callback: () => rootNav.navigate("AccountManager"),
     },
     {
       id: 4,

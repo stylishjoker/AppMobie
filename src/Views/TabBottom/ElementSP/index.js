@@ -4,7 +4,11 @@ const widthImg = 100;
 const heightImg = 100;
 const ElementSP = (props) => {
   return (
-    <TouchableOpacity style={styles.container} key={props.id}>
+    <TouchableOpacity
+      style={styles.container}
+      key={props.id}
+      onPress={props.callback}
+    >
       <View style={styles.face}>
         <Image
           style={styles.img}

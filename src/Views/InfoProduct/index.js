@@ -21,13 +21,17 @@ const InfoProduct = () => {
   const product = useSelector(INFO_PRODUCTS);
   const [value, setValue] = useState(1);
   const decrement = () => {
-    setValue(value - 1);
+    if (value == 1) {
+      setValue(1);
+    } else {
+      setValue(value - 1);
+    }
   };
   const incrementByAmount = () => {
     setValue(value + 1);
   };
   const handleOnChange = (text) => {
-    setValue(value + 1);
+    setValue(parseInt(text));
   };
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
