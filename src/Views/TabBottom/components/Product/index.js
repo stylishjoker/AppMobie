@@ -33,7 +33,7 @@ const Product = (props) => {
 const styles = StyleSheet.create({
   container: {
     marginBottom: border,
-    width: 150,
+    width: 180,
     backgroundColor: "white",
     borderRadius: border,
     justifyContent: "center",
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   Face: {
     position: "absolute",
     top: 0,
-    width: 150,
+    width: "100%",
     height: 150,
   },
   Image: {

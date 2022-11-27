@@ -21,7 +21,8 @@ import { setInput } from "../../../../features/SearchBar";
 import { getScreens } from "../../../../features/GetScreen";
 import { getLaptops } from "../../../../features/GetLaptop";
 import { removeAccents } from "../../../../App/configStr";
-import { LAPTOPS, SCREENS, PRODUCTS } from "../../../../App/store/selector";
+import { LAPTOPS, SCREENS } from "../../../../App/store/selector";
+import { setProducts } from "../../../../features/GetProducts";
 
 const specialName = [
   "laptops",
@@ -44,7 +45,6 @@ const SearchBar = (props) => {
   const dispatch = useDispatch();
   const rootNav = useNavigation();
   const SearchInput = useSelector(searchResult);
-  const products = useSelector(PRODUCTS);
   const [show, setShow] = useState(true);
   const [history, setHistory] = useState([]);
   const laptops = useSelector(LAPTOPS);
@@ -76,6 +76,7 @@ const SearchBar = (props) => {
         return itemData.indexOf(textData) > -1;
       });
       setShowSearch(newData);
+      return newData;
     }
   };
   const handleClick = () => {
@@ -84,6 +85,7 @@ const SearchBar = (props) => {
       storeData(history.concat(SearchInput));
       rootNav.navigate("SearchProducts");
     }
+    dispatch(setProducts(handleOnchange(SearchInput)));
   };
   const clearHistory = () => {
     setHistory([]);
@@ -104,7 +106,7 @@ const SearchBar = (props) => {
         onFocus={() => setShow(false)}
         style={styles.TextInput}
         placeholder={props.placeholder}
-        onChangeText={handleOnchange}
+        onChangeText={(text) => handleOnchange(text)}
       />
       <LinearGradient
         colors={["#23262F", "#999"]}

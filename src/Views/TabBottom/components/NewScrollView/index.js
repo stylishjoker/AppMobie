@@ -6,16 +6,28 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/core";
 
 import Product from "../Product";
 import { SCREEN_WiDTH } from "../../../../App/ScreenDefault";
-import { COLOR, BACK_GROUND } from "../../../../App/store/selector";
+import {
+  COLOR,
+  BACK_GROUND,
+  INFO_PRODUCTS,
+} from "../../../../App/store/selector";
+import { setInfoProduct } from "../../../../features/GetProducts";
 
 const NewScrollView = (props) => {
+  const rootNav = useNavigation();
+  const dispatch = useDispatch();
   const textColor = useSelector(COLOR);
   const backgroundColor = useSelector(BACK_GROUND);
-  const handleClick = () => {};
+  const infoProduct = useSelector(INFO_PRODUCTS);
+  const HandleClick = (item) => {
+    dispatch(setInfoProduct(item));
+    rootNav.navigate("InfoProduct");
+  };
   return (
     <View>
       <View
@@ -49,7 +61,7 @@ const NewScrollView = (props) => {
           Array.from(props.products).map((product) => {
             return (
               <Product
-                callback={handleClick}
+                callback={() => HandleClick(product)}
                 key={product.id}
                 name={product.name}
                 price={product.price}
