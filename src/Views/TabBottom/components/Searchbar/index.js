@@ -26,6 +26,7 @@ import { removeAccents } from "../../../../App/configStr";
 import { LAPTOPS, SCREENS } from "../../../../App/store/selector";
 import { setProducts } from "../../../../features/GetProducts";
 import NewButton from "../../../../components/NewButton";
+import BtnDelete from "./btnDele";
 
 const specialName = [
   "laptops",
@@ -105,7 +106,7 @@ const SearchBar = (props) => {
       </View>
       <TextInput
         value={SearchInput}
-        onBlur={() => setShow(true)}
+        // onBlur={() => setShow(true)}
         onFocus={() => setShow(false)}
         style={styles.TextInput}
         placeholder={props.placeholder}
@@ -149,13 +150,7 @@ const SearchBar = (props) => {
               return <TextSeach key={index} name={item} />;
             })}
           </View>
-          <TouchableOpacity
-            style={styles.clearHistory}
-            onPress={() => console.log("hehe")}
-          >
-            <Text>Xóa lịch sử tìm kiếm</Text>
-            <Icon name="trash" />
-          </TouchableOpacity>
+          <BtnDelete name="xoa lich su tim kiem" callback={clearHistory}/>
         </View>
         <View style={styles.preview}>
           <Text style={styles.title}>Đề xuất tìm kiếm</Text>
@@ -262,6 +257,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     opacity: 0.4,
     backgroundColor: "red",
+    padding :8,
   },
 });
 export default SearchBar;
