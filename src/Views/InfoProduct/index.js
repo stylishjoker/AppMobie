@@ -9,15 +9,17 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector ,useDispatch } from "react-redux";
 
 import { INFO_PRODUCTS } from "../../App/store/selector";
 import { SCREEN_WiDTH, SCREEN_HEIGHT } from "../../App/ScreenDefault";
 import SearchBar from "../TabBottom/components/Searchbar";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Spacer from "../../components/Spacer";
+import { postOrderProduct } from "../../features/GetProducts";
 
 const InfoProduct = () => {
+  const dispatch = useDispatch();
   const product = useSelector(INFO_PRODUCTS);
   const [value, setValue] = useState(1);
   const decrement = () => {
@@ -33,6 +35,16 @@ const InfoProduct = () => {
   const handleOnChange = (text) => {
     setValue(parseInt(text));
   };
+  const handleClick=()=>{
+    const obj={
+      idPro : product.id,
+      name:product.name,
+      price:product.price,
+      linkImg :product.imgLink,
+      number:value.toString(),
+    }
+    dispatch(postOrderProduct(obj));
+  }
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
       {/* <SearchBar placeholder="Nhập thông tin sản phẩm" /> */}
@@ -44,13 +56,15 @@ const InfoProduct = () => {
         </View>
         <View style={styles.description}>
           <Text style={styles.title}>Thông số</Text>
-          {product.info.map((item, index) => {
-            return (
-              <Text key={index} style={styles.desc}>
-                <Icon name="arrow-right" /> {item}
-              </Text>
-            );
-          })}
+          {
+            product ? (product.info.map((item, index) => {
+              return (
+                <Text key={index} style={styles.desc}>
+                  <Icon name="arrow-right" /> {item}
+                </Text>
+              );
+            })):(<></>)
+          }
           <View style={styles.addCart}>
             <View style={styles.number}>
               <TouchableOpacity style={styles.changNum} onPress={decrement}>
@@ -69,7 +83,7 @@ const InfoProduct = () => {
                 <Icon name="plus" />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.buy}>
+            <TouchableOpacity style={styles.buy} onPress={handleClick}>
               <Text style={styles.buyText}>Thêm vào giỏ hàng</Text>
             </TouchableOpacity>
           </View>

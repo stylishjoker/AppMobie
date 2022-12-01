@@ -166,6 +166,7 @@ const SearchBar = (props) => {
 };
 const styles = StyleSheet.create({
   container: {
+    zIndex:10,
     width: "100%",
     display: "flex",
     flexDirection: "row",
