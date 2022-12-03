@@ -13,12 +13,14 @@ import { getOrderProducts } from "../../../features/GetProducts";
 import { remoteOrderProduct } from "../../../features/GetProducts";
 import { SAVE_USER } from "../../../App/store/selector";
 import SearchBar from "../components/Searchbar";
+import Payment from "./payment";
 
 const ShoppingCart = ({ navigation }) => {
   const product = useSelector((state) => state.GetProducts.orderProducts);
   const user = useSelector(SAVE_USER);
   const dispatch = useDispatch();
   const [payment, setPayment] = useState(0);
+  const [show, setShow] = useState(false);
   useEffect(() => {
     navigation.addListener("focus", () => {
       dispatch(getOrderProducts());
@@ -43,9 +45,10 @@ const ShoppingCart = ({ navigation }) => {
       <SearchBar />
       <View style={styles.pay}>
         <Text style={styles.Text}>Tổng thanh toán: {payment}</Text>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => setShow(!show)}>
           <Text style={styles.textBuy}>Thanh toán</Text>
         </TouchableOpacity>
+        <Payment show={show} total={payment} />
       </View>
       <FlatList
         data={product}
