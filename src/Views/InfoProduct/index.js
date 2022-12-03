@@ -8,19 +8,27 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import { useSelector ,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/core";
 
-import { INFO_PRODUCTS } from "../../App/store/selector";
-import { SCREEN_WiDTH, SCREEN_HEIGHT } from "../../App/ScreenDefault";
+import { INFO_PRODUCTS, SAVE_USER } from "../../App/store/selector";
+import {
+  SCREEN_WiDTH,
+  SCREEN_HEIGHT,
+  STATUS_BAR_HEIGHT,
+} from "../../App/ScreenDefault";
 import SearchBar from "../TabBottom/components/Searchbar";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Spacer from "../../components/Spacer";
 import { postOrderProduct } from "../../features/GetProducts";
 
 const InfoProduct = () => {
+  const rootNav = useNavigation();
   const dispatch = useDispatch();
   const product = useSelector(INFO_PRODUCTS);
+  const user = useSelector(SAVE_USER);
   const [value, setValue] = useState(1);
   const decrement = () => {
     if (value == 1) {
@@ -35,19 +43,33 @@ const InfoProduct = () => {
   const handleOnChange = (text) => {
     setValue(parseInt(text));
   };
-  const handleClick=()=>{
-    const obj={
-      idPro : product.id,
-      name:product.name,
-      price:product.price,
-      linkImg :product.imgLink,
-      number:value.toString(),
-    }
+  const handleClick = () => {
+    const obj = {
+      idPro: product.id,
+      iduser: user.id,
+      namePro: product.name,
+      price: product.price,
+      linkImg: product.imgLink,
+      number: value.toString(),
+      name: user.fullname,
+    };
     dispatch(postOrderProduct(obj));
-  }
+    Alert.alert("Mua hàng thành công !!!", "Tới giỏ hàng", [
+      {
+        text: "Tiếp tục mua",
+        onPress: () => rootNav.navigate("ListProduct"),
+      },
+      {
+        text: "Ok",
+        onPress: () => rootNav.navigate("ShoppingCart"),
+      },
+    ]);
+  };
   return (
-    <SafeAreaView style={{ backgroundColor: "white" }}>
-      {/* <SearchBar placeholder="Nhập thông tin sản phẩm" /> */}
+    <SafeAreaView
+      style={{ backgroundColor: "white", marginTop: STATUS_BAR_HEIGHT }}
+    >
+      <SearchBar placeholder="Nhập thông tin sản phẩm" header="Sản phẩm" />
       <ScrollView style={styles.ScrollView}>
         <Image style={styles.Image} source={{ uri: product.imgLink }} />
         <View style={styles.info}>
@@ -56,15 +78,17 @@ const InfoProduct = () => {
         </View>
         <View style={styles.description}>
           <Text style={styles.title}>Thông số</Text>
-          {
-            product ? (product.info.map((item, index) => {
+          {product ? (
+            product.info.map((item, index) => {
               return (
                 <Text key={index} style={styles.desc}>
                   <Icon name="arrow-right" /> {item}
                 </Text>
               );
-            })):(<></>)
-          }
+            })
+          ) : (
+            <></>
+          )}
           <View style={styles.addCart}>
             <View style={styles.number}>
               <TouchableOpacity style={styles.changNum} onPress={decrement}>
@@ -89,17 +113,14 @@ const InfoProduct = () => {
           </View>
           <Text style={styles.title}>Đánh giá</Text>
           <Text style={{ textAlign: "justify" }}>{product.description}</Text>
+          <Spacer height="300" />
         </View>
-        <Spacer height="100" />
       </ScrollView>
     </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
   container: {},
-  //   SearchBar: {
-  //     position: "absolute",
-  //   },
   Image: {
     width: SCREEN_WiDTH,
     height: SCREEN_WiDTH * 0.8,

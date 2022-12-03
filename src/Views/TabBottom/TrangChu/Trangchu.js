@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from "react-native";
+import { View, StyleSheet, ScrollView, SafeAreaView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -12,17 +12,19 @@ import { getLaptops } from "../../../features/GetLaptop";
 import {
   LAPTOPS,
   SCREENS,
-  COLOR,
   BACK_GROUND,
+  SAVE_USER,
 } from "../../../App/store/selector";
 import { getScreens } from "../../../features/GetScreen";
+import { setAvatar } from "../../../features/login";
 import Spacer from "../../../components/Spacer";
 
 const TrangChu = () => {
   const dispatch = useDispatch();
   const laptops = useSelector(LAPTOPS);
   const screens = useSelector(SCREENS);
-  const textColor = useSelector(COLOR);
+  const user = useSelector(SAVE_USER);
+
   const backgroundColor = useSelector(BACK_GROUND);
   const listProducts = [
     {
@@ -35,6 +37,7 @@ const TrangChu = () => {
     },
   ];
   useEffect(() => {
+    dispatch(setAvatar(user.linkImg));
     dispatch(getLaptops());
     dispatch(getScreens());
   }, []);
@@ -43,13 +46,8 @@ const TrangChu = () => {
       colors={backgroundColor ? ["#23262F", "#333", "#999"] : ["#fff", "#fff"]}
     >
       <SafeAreaView style={styles.container}>
-        <View>
-          <Text style={[styles.title, { color: textColor ? "white" : "#333" }]}>
-            Trang Chủ
-          </Text>
-        </View>
         <View style={styles.searchBar}>
-          <SearchBar placeholder="Nhập thông tin sản phẩm" />
+          <SearchBar placeholder="Nhập thông tin sản phẩm" header="Trang chủ" />
         </View>
         <ScrollView style={styles.Content} showsVerticalScrollIndicator={false}>
           <View style={styles.slider}>
@@ -81,19 +79,13 @@ const styles = StyleSheet.create({
     height: WINDOW_HEIGHT,
     marginBottom: 100,
   },
-  title: {
-    fontSize: 18,
-    alignSelf: "center",
-    padding: 5,
-    fontWeight: "600",
-  },
   searchBar: {
     width: "100%",
     borderColor: "white",
     borderRightWidth: 0,
     borderLeftWidth: 0,
-    borderTopWidth: 3,
-    borderBottomWidth: 3,
+    borderTopWidth: 2,
+    borderBottomWidth: 2,
     alignItems: "center",
     zIndex: 100,
     shadowColor: "#333",

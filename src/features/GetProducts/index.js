@@ -28,7 +28,6 @@ export const GetProducts = createSlice({
         state.orderProducts = action.payload;
       })
       .addCase(remoteOrderProduct.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.orderProducts.pop(action.payload);
         state.status = "deleted";
       });
@@ -40,29 +39,21 @@ export default GetProducts.reducer;
 export const postOrderProduct = createAsyncThunk(
   "order/postProduct",
   async (data) => {
-    const res =await axios.post(
-      "https://6387529dd9b24b1be3ed076e.mockapi.io/orderProduct",
-      data
-    );
+    const res = await axios.post(BASE_URL + "/orderProducts", data);
     return res.data;
   }
 );
 export const getOrderProducts = createAsyncThunk(
   "order/getproducts",
   async () => {
-    console.log("getorder");
-    const res = await axios.get(
-      "https://6387529dd9b24b1be3ed076e.mockapi.io/orderProduct"
-    );
+    const res = await axios.get(BASE_URL + "/orderProducts");
     return res.data;
   }
 );
 export const remoteOrderProduct = createAsyncThunk(
   "order/remoteproduct",
   async (id) => {
-    const res = await axios.delete(
-      "https://6387529dd9b24b1be3ed076e.mockapi.io/orderProduct/" + id
-    );
+    const res = await axios.delete(BASE_URL + "/orderProducts/" + id);
     return res.data;
   }
 );

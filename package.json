@@ -25,10 +25,13 @@
     "react-native": "0.69.6",
     "react-native-dropdown-select-list": "^2.0.2",
     "react-native-modal": "^13.0.1",
+    "react-native-payments": "^0.8.4",
     "react-native-reanimated": "~2.9.1",
+    "react-native-toast-message": "^2.1.5",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.7",
-    "react-redux": "^8.0.5"
+    "react-redux": "^8.0.5",
+    "tipsi-stripe": "^10.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

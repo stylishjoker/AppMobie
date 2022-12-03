@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ScrollView, StyleSheet, Dimensions, View } from "react-native";
 import OptionBar from "./OptionBar";
+import Toast from "react-native-toast-message";
 
 const { width } = Dimensions.get("window");
 const widthScrollBar = width * 0.2;
@@ -21,31 +22,26 @@ const listOption = [
     id: 3,
     name: "Laptop",
     require: require("../../../../assets/OptionBar/laptop.png"),
-    callback: () => {},
   },
   {
     id: 4,
     name: "Ram",
     require: require("../../../../assets/OptionBar/ram.png"),
-    callback: () => {},
   },
   {
     id: 5,
     name: "CPU - Core",
     require: require("../../../../assets/OptionBar/cpu.png"),
-    callback: () => {},
   },
   {
     id: 6,
     name: "VGA - Card đồ họa",
     require: require("../../../../assets/OptionBar/vga.png"),
-    callback: () => {},
   },
   {
     id: 7,
     name: "Free Ship",
     require: require("../../../../assets/OptionBar/free-shipping.png"),
-    callback: () => {},
   },
 ];
 const ListOption = () => {
@@ -60,6 +56,13 @@ const ListOption = () => {
       setWidthScrollView(slide + 5);
     }
   };
+  function showToast() {
+    Toast.show({
+      type: "success",
+      text1: "Hello",
+      text2: "This is some something 👋",
+    });
+  }
   return (
     <View>
       <ScrollView
@@ -74,7 +77,7 @@ const ListOption = () => {
           return (
             <OptionBar
               key={item.id}
-              callback={item.callback}
+              callback={showToast}
               name={item.name}
               require={item.require}
             />

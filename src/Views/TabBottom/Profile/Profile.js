@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "react-native-modal";
 
 import ButtonImg from "../../../components/ButtonImg";
@@ -19,6 +19,7 @@ import ModalSetting from "./setting";
 
 const Profile = () => {
   const rootNav = useNavigation();
+  const dispatch = useDispatch();
   const user = useSelector(SAVE_USER);
   const [show, setShow] = useState(false);
   const [showSetting, setShowSetting] = useState(false);
@@ -37,13 +38,7 @@ const Profile = () => {
       id: 2,
       name: "Giỏ hàng",
       srcImg: require("../../../assets/Icon/shopping-cart.png"),
-      callback: () => {
-        return (
-          <View>
-            <Text>Hello word</Text>
-          </View>
-        );
-      },
+      callback: () => rootNav.navigate("ShoppingCart"),
     },
     {
       id: 3,
@@ -129,13 +124,11 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    // backgroundColor: "#F5F4F7",
   },
   option: {
     position: "absolute",
     width: "90%",
     alignItems: "center",
-    // backgroundColor: "white",
     borderRadius: 50,
     padding: 30,
     bottom: "15%",

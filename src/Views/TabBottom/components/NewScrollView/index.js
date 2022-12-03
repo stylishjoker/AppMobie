@@ -11,11 +11,7 @@ import { useNavigation } from "@react-navigation/core";
 
 import Product from "../Product";
 import { SCREEN_WiDTH } from "../../../../App/ScreenDefault";
-import {
-  COLOR,
-  BACK_GROUND,
-  INFO_PRODUCTS,
-} from "../../../../App/store/selector";
+import { COLOR, BACK_GROUND } from "../../../../App/store/selector";
 import { setInfoProduct } from "../../../../features/GetProducts";
 
 const NewScrollView = (props) => {
@@ -23,7 +19,6 @@ const NewScrollView = (props) => {
   const dispatch = useDispatch();
   const textColor = useSelector(COLOR);
   const backgroundColor = useSelector(BACK_GROUND);
-  const infoProduct = useSelector(INFO_PRODUCTS);
   const HandleClick = (item) => {
     dispatch(setInfoProduct(item));
     rootNav.navigate("InfoProduct");

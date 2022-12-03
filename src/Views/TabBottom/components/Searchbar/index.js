@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
+  Keyboard,
   TextInput,
   Text,
   TouchableOpacity,
   View,
   ScrollView,
-  Image,
-  Button,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/core";
@@ -15,7 +13,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { SCREEN_WiDTH, SCREEN_HEIGHT } from "../../../../App/ScreenDefault";
 import ElementSP from "../../ElementSP";
 import TextSeach from "../TextSearch";
 import { searchResult } from "../../../../App/store/selector";
@@ -23,14 +20,14 @@ import { setInput } from "../../../../features/SearchBar";
 import { getScreens } from "../../../../features/GetScreen";
 import { getLaptops } from "../../../../features/GetLaptop";
 import { removeAccents } from "../../../../App/configStr";
-import { LAPTOPS, SCREENS } from "../../../../App/store/selector";
+import { LAPTOPS, SCREENS, COLOR } from "../../../../App/store/selector";
 import { setProducts } from "../../../../features/GetProducts";
-import NewButton from "../../../../components/NewButton";
 import BtnDelete from "./btnDele";
+import { styles } from "./style";
 
 const specialName = [
-  "laptops",
-  "screens",
+  "laptop",
+  "screen",
   "computer",
   "hàng công nghệ",
   "hàng công nghệ",
@@ -46,6 +43,7 @@ const storeData = async (value) => {
 };
 
 const SearchBar = (props) => {
+  const textColor = useSelector(COLOR);
   const dispatch = useDispatch();
   const rootNav = useNavigation();
   const SearchInput = useSelector(searchResult);
@@ -71,7 +69,7 @@ const SearchBar = (props) => {
   };
   const handleOnchange = (text) => {
     dispatch(setInput(text));
-    if (text) {
+    if (text !== "") {
       const newData = allProducts.filter(function (item) {
         const itemData = removeAccents(item.name)
           ? removeAccents(item.name).toUpperCase()
@@ -84,42 +82,66 @@ const SearchBar = (props) => {
     }
   };
   const handleClick = () => {
-    if (searchResult) {
+    if (SearchInput !== "") {
       setHistory((prev) => [...prev, SearchInput]);
       storeData(history.concat(SearchInput));
+      dispatch(setProducts(handleOnchange(SearchInput)));
       rootNav.navigate("SearchProducts");
     }
-    dispatch(setProducts(handleOnchange(SearchInput)));
   };
   const clearHistory = () => {
     setHistory([]);
     AsyncStorage.removeItem("historySearch");
   };
+  const handleBack = () => {
+    setShow(!show);
+    Keyboard.dismiss();
+  };
+  const SearchText = (value) => {
+    dispatch(setProducts(handleOnchange(value)));
+    rootNav.navigate("SearchProducts");
+  };
   return (
-    <View style={styles.container}>
-      <View style={styles.ImageBar}>
-        <Image
-          style={styles.Image}
-          source={require("../../../../assets/Icon/search.png")}
-          resizeMode="stretch"
-        />
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: textColor ? "#333" : "white" },
+      ]}
+    >
+      <View>
+        <Text
+          style={[
+            styles.header,
+            { color: textColor ? "white" : "#333" },
+            { display: show ? "flex" : "none" },
+          ]}
+        >
+          {props.header}
+        </Text>
       </View>
-      <TextInput
-        value={SearchInput}
-        // onBlur={() => setShow(true)}
-        onFocus={() => setShow(false)}
-        style={styles.TextInput}
-        placeholder={props.placeholder}
-        onChangeText={(text) => handleOnchange(text)}
-      />
-      <LinearGradient
-        colors={["#23262F", "#999"]}
-        style={styles.TouchableOpacity}
-      >
-        <TouchableOpacity onPress={handleClick}>
-          <Text style={styles.Text}>Search</Text>
+      <View style={styles.SearchBar}>
+        <TouchableOpacity
+          style={[styles.back, { display: !show ? "flex" : "none" }]}
+          onPress={handleBack}
+        >
+          <Icon style={styles.Icon} name="angle-left" />
         </TouchableOpacity>
-      </LinearGradient>
+        <TextInput
+          value={SearchInput}
+          onFocus={() => setShow(false)}
+          style={styles.TextInput}
+          placeholder={props.placeholder}
+          onChangeText={(text) => handleOnchange(text)}
+        />
+        <LinearGradient
+          colors={["#23262F", "#999"]}
+          style={styles.TouchableOpacity}
+        >
+          <TouchableOpacity onPress={handleClick}>
+            <Icon style={styles.Icon} name="search" />
+          </TouchableOpacity>
+        </LinearGradient>
+      </View>
       <ScrollView style={show ? styles.noneSearchResult : styles.searchResult}>
         <View style={styles.result}>
           {SearchInput ? (
@@ -147,16 +169,28 @@ const SearchBar = (props) => {
           <Text style={styles.title}>Lịch sử tìm kiếm</Text>
           <View style={styles.content}>
             {[...new Set(history)].map((item, index) => {
-              return <TextSeach key={index} name={item} />;
+              return (
+                <TextSeach
+                  key={index}
+                  name={item}
+                  callback={() => SearchText(item)}
+                />
+              );
             })}
           </View>
-          <BtnDelete name="xoa lich su tim kiem" callback={clearHistory}/>
+          <BtnDelete name="Xóa lịch sử tìm kiếm" callback={clearHistory} />
         </View>
         <View style={styles.preview}>
           <Text style={styles.title}>Đề xuất tìm kiếm</Text>
           <View style={styles.content}>
             {specialName.map((name, index) => {
-              return <TextSeach key={index} name={name} />;
+              return (
+                <TextSeach
+                  key={index}
+                  name={name}
+                  callback={() => SearchText(name)}
+                />
+              );
             })}
           </View>
         </View>
@@ -164,101 +198,5 @@ const SearchBar = (props) => {
     </View>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    zIndex:10,
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "white",
-    paddingRight: 3,
-    paddingLeft: 5,
-    height: 50,
-    borderRadius: 25,
-    borderWidth: 2,
-    borderColor: "#999",
-    shadowColor: "#333",
-    shadowOffset: {
-      width: 0,
-      height: 9,
-    },
-    shadowOpacity: 0.48,
-    shadowRadius: 11.95,
 
-    elevation: 18,
-  },
-  TextInput: {
-    flex: 5,
-    height: 40,
-    margin: 12,
-    borderWidth: 0,
-  },
-  Image: {
-    width: 30,
-    height: 30,
-  },
-  TouchableOpacity: {
-    flex: 2,
-    height: 40,
-    paddingRight: 5,
-    paddingLeft: 5,
-    borderRadius: 50,
-    right: 0,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  ImageBar: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    opacity: 0.5,
-  },
-  Text: {
-    fontWeight: "600",
-    color: "white",
-  },
-  searchResult: {
-    position: "absolute",
-    top: 50,
-    zIndex: 100,
-    height: SCREEN_HEIGHT / 2,
-    width: SCREEN_WiDTH,
-    display: "flex",
-    flexDirection: "column",
-    left: 0,
-    backgroundColor: "white",
-  },
-  noneSearchResult: {
-    display: "none",
-  },
-  historySearch: {},
-  title: {
-    fontSize: 18,
-    fontWeight: "700",
-    marginLeft: 10,
-  },
-  content: {
-    borderTopColor: "#999",
-    borderTopWidth: 1,
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-  },
-  clearHistory: {
-    position: "absolute",
-    display: "flex",
-    flexDirection: "row",
-    right: 5,
-    top: 5,
-    alignItems: "center",
-    opacity: 0.4,
-    backgroundColor: "red",
-    padding :8,
-  },
-});
 export default SearchBar;

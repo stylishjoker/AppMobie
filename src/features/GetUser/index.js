@@ -29,6 +29,10 @@ export const GetUser = createSlice({
       .addCase(postUser.fulfilled, (state, action) => {
         state.idUser.push(action.payload);
         state.status = "success";
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        let result = state.idUser.find((item) => item.id === action.payload);
+        result = action.payload;
       });
   },
 });
@@ -44,6 +48,11 @@ export const getUsers = createAsyncThunk("users/getusers", async () => {
 });
 export const postUser = createAsyncThunk("users/postuser", async (value) => {
   const res = await axios.post(URL_LINK, value);
+  return res.data;
+});
+export const updateUser = createAsyncThunk("user/updateuser", async (value) => {
+  console.log(value);
+  const res = await axios.put(URL_LINK + "/" + value.id, value);
   return res.data;
 });
 export const { setIdUser } = GetUser.actions;

@@ -8,6 +8,9 @@ import { SAVE_USER } from "../../../../App/store/selector";
 const heightHeader = 50;
 const Header = (props) => {
   const user = useSelector(SAVE_USER);
+  if (!user) {
+    return <></>;
+  }
   return (
     <LinearGradient
       start={{ x: 0.0, y: 0.25 }}

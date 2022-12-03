@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 import TrangChu from "../TabBottom/TrangChu/Trangchu";
-import SanPhamBanChay from "../TabBottom/SanPhamBanChay/Sanphambanchay";
 import SanPham from "../TabBottom/SanPham/SanPham";
 import Profile from "../TabBottom/Profile/Profile";
 import ShoppingCart from "../TabBottom/Cart";
@@ -22,13 +21,6 @@ const TabComponents = [
     component: SanPham,
     icon: "star",
     srcImg: require("../../assets/TabBarIcon/package.png"),
-  },
-  {
-    id: 3,
-    name: "Follow",
-    component: SanPhamBanChay,
-    icon: "heart",
-    srcImg: require("../../assets/TabBarIcon/star.png"),
   },
   {
     id: 4,

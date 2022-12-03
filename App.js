@@ -10,6 +10,8 @@ import HomeMain from "./src/Views/homeMain";
 import SearchProducts from "./src/Views/SearchProducts";
 import InfoProduct from "./src/Views/InfoProduct";
 import ManagerAccount from "./src/Views/MangerAccount";
+import SanPham from "./src/Views/TabBottom/SanPham/SanPham";
+import ShoppingCart from "./src/Views/TabBottom/Cart";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +49,16 @@ export default function App() {
           <Stack.Screen
             name="AccountManager"
             component={ManagerAccount}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ListProduct"
+            component={SanPham}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ShoppingCart"
+            component={ShoppingCart}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

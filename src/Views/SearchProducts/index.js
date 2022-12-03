@@ -1,24 +1,25 @@
 import React from "react";
-import {
-  SafeAreaView,
-  View,
-  StyleSheet,
-  Text,
-  ScrollView,
-  Image,
-} from "react-native";
-import { useSelector } from "react-redux";
+import { SafeAreaView, View, StyleSheet, Text, ScrollView } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { useNavigation } from "@react-navigation/core";
 
 import { PRODUCTS, searchResult, BACK_GROUND } from "../../App/store/selector";
 import Product from "../TabBottom/components/Product";
 import SearchBar from "../TabBottom/components/Searchbar";
-import { SCREEN_HEIGHT } from "../../App/ScreenDefault";
+import { SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from "../../App/ScreenDefault";
+import { setInfoProduct } from "../../features/GetProducts";
 
 const SearchProducts = () => {
+  const rootNav = useNavigation();
+  const dispatch = useDispatch();
   const products = useSelector(PRODUCTS);
   const search = useSelector(searchResult);
   const background = useSelector(BACK_GROUND);
+  const HandleClick = (item) => {
+    dispatch(setInfoProduct(item));
+    rootNav.navigate("InfoProduct");
+  };
   return (
     <SafeAreaView
       style={[
@@ -26,7 +27,7 @@ const SearchProducts = () => {
         styles.container,
       ]}
     >
-      {/* <SearchBar /> */}
+      <SearchBar placeholder="Nhập thông tin sản phẩm" header="Tìm kiếm" />
       <View>
         <View style={styles.title}>
           <Icon name="search" style={{ fontSize: 20 }} />
@@ -39,6 +40,7 @@ const SearchProducts = () => {
               Array.from(products).map((item, index) => {
                 return (
                   <Product
+                    callback={() => HandleClick(item)}
                     key={index}
                     imgLink={item.imgLink}
                     name={item.name}
@@ -52,13 +54,14 @@ const SearchProducts = () => {
             )}
           </View>
         </ScrollView>
-        {/* <Spacer height="100" /> */}
       </View>
     </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    marginTop: STATUS_BAR_HEIGHT,
+  },
   title: {
     display: "flex",
     flexDirection: "row",
@@ -75,7 +78,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   ScrollView: {
-    height: SCREEN_HEIGHT - 120,
+    height: SCREEN_HEIGHT - 200,
   },
 });
 export default SearchProducts;

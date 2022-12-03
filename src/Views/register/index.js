@@ -8,14 +8,17 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
-  Alert,
+  StatusBar,
 } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { STATUS_BAR_HEIGHT, SCREEN_HEIGHT } from "../../App/ScreenDefault";
+import { SCREEN_HEIGHT } from "../../App/ScreenDefault";
 import NewButton from "../../components/NewButton";
 import Spacer from "../../components/Spacer";
 import { setStart } from "../../features/AppStart";
+import ListAvatar from "../TabBottom/components/ListAvatar";
+import { AVATAR } from "../../App/store/selector";
+import { postUser } from "../../features/GetUser";
 
 const Register = () => {
   const rootNav = useNavigation();
@@ -25,11 +28,26 @@ const Register = () => {
   const [numberPhone, setNumberPhone] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [show, setShow] = useState(false);
+  const avatar = useSelector(AVATAR);
+
   const handleClick = () => {
     dispatch(setStart(false));
     rootNav.replace("Home");
   };
-  const handleRegist = () => {};
+  const handleRegist = () => {
+    const newData = {
+      account,
+      email,
+      password,
+      fullname,
+      linkImg: avatar,
+    };
+    console.log(newData);
+    dispatch(postUser(newData));
+    rootNav.navigate("Home");
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity style={styles.back} onPress={handleClick}>
@@ -53,13 +71,19 @@ const Register = () => {
         style={styles.TextInput}
         placeholder="Nhập tên của bạn"
       />
-      <TextInput
-        keyboardType="number-pad"
-        value={numberPhone}
-        onChangeText={(text) => setNumberPhone(text)}
-        style={styles.TextInput}
-        placeholder="Số điện thoại"
-      />
+      <View style={styles.formGroup}>
+        <TextInput
+          keyboardType="number-pad"
+          value={numberPhone}
+          onChangeText={(text) => setNumberPhone(text)}
+          style={styles.Number}
+          placeholder="Số điện thoại"
+        />
+        <TouchableOpacity style={styles.avatar} onPress={() => setShow(!show)}>
+          <Text style={styles.Text}>Chọn avatar</Text>
+        </TouchableOpacity>
+        <ListAvatar show={show} callback={() => setShow(!show)} />
+      </View>
       <TextInput
         value={email}
         onChangeText={(text) => setEmail(text)}
@@ -94,7 +118,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   back: {
-    marginTop: 10,
+    marginTop: StatusBar.currentHeight,
     width: 50,
     height: 50,
     alignItems: "center",
@@ -111,6 +135,34 @@ const styles = StyleSheet.create({
     borderColor: "#999",
     color: "#999",
     alignSelf: "center",
+  },
+  formGroup: {
+    width: "90%",
+    display: "flex",
+    flexDirection: "row",
+    alignSelf: "center",
+    justifyContent: "center",
+  },
+  Number: {
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 25,
+    height: 40,
+    flex: 2,
+    borderColor: "#999",
+  },
+  avatar: {
+    flex: 1,
+    backgroundColor: "#999",
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: "#999",
+    marginLeft: 6,
+    borderRadius: 25,
+  },
+  Text: {
+    color: "white",
+    fontWeight: "500",
   },
 });
 export default Register;

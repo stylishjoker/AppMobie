@@ -22,6 +22,7 @@ import ElementSP from "../ElementSP";
 import Header from "../components/Header";
 import { removeAccents } from "../../../App/configStr";
 import { setInfoProduct } from "../../../features/GetProducts";
+import Spacer from "../../../components/Spacer";
 
 const SanPham = () => {
   const [selected, setSelected] = useState("Tất cả");
@@ -134,23 +135,21 @@ const SanPham = () => {
           width: SCREEN_WiDTH,
         }}
       >
-        <ScrollView style={styles.ScrollView} pagingEnabled>
-          <View style={styles.container}>
-            {(search.length != 0 ? Productsfilter : products).map(
-              (_element, index) => {
-                return (
-                  <ElementSP
-                    callback={() => handleClick(_element)}
-                    key={index}
-                    name={_element.name}
-                    price={_element.price}
-                    url={_element.imgLink}
-                  />
-                );
-              }
-            )}
-          </View>
-          {/* <Spacer height="100" /> */}
+        <ScrollView style={styles.ScrollView}>
+          {(search.length != 0 ? Productsfilter : products).map(
+            (_element, index) => {
+              return (
+                <ElementSP
+                  callback={() => handleClick(_element)}
+                  key={index}
+                  name={_element.name}
+                  price={_element.price}
+                  url={_element.imgLink}
+                />
+              );
+            }
+          )}
+          <Spacer height="120" />
         </ScrollView>
       </View>
     </SafeAreaView>
