@@ -6,6 +6,7 @@ import {
   View,
   Text,
   StyleSheet,
+  Alert,
 } from "react-native";
 import OrderItem from "./orderItem";
 import { useSelector, useDispatch } from "react-redux";
@@ -29,6 +30,16 @@ const ShoppingCart = ({ navigation }) => {
   const handleClick = (id) => {
     dispatch(remoteOrderProduct(id));
   };
+  const handleConfirm = () => {
+    if (product) {
+      Array.from(product).forEach((item) => {
+        if (item.iduser == user.id) {
+          dispatch(remoteOrderProduct(item.id));
+        }
+      });
+      Alert.alert("Thanh toán thành công");
+    }
+  };
   useEffect(() => {
     const result = product.reduce((total, value) => {
       var temp = 0;
@@ -48,7 +59,12 @@ const ShoppingCart = ({ navigation }) => {
         <TouchableOpacity style={styles.button} onPress={() => setShow(!show)}>
           <Text style={styles.textBuy}>Thanh toán</Text>
         </TouchableOpacity>
-        <Payment show={show} total={payment} />
+        <Payment
+          show={show}
+          total={payment}
+          callback={() => setShow(!show)}
+          confirm={handleConfirm}
+        />
       </View>
       <FlatList
         data={product}

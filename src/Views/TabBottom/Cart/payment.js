@@ -59,7 +59,15 @@ const Payment = (props) => {
           </TouchableOpacity>
         </View>
 
-        <NewButton title="Xác nhận thanh toán" color="white" bgColor="red" />
+        <NewButton
+          title="Xác nhận thanh toán"
+          color="white"
+          bgColor="red"
+          callback={props.confirm}
+        />
+        <TouchableOpacity style={styles.cancel} onPress={props.callback}>
+          <Text>X</Text>
+        </TouchableOpacity>
       </View>
     </Modal>
   );
@@ -92,6 +100,13 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     margin: 20,
+  },
+  cancel: {
+    position: "absolute",
+    padding: 5,
+    backgroundColor: "#999",
+    right: 0,
+    margin: 5,
   },
 });
 export default Payment;
