@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
-import { SCREEN_HEIGHT } from "../../App/ScreenDefault";
 import NewButton from "../../components/NewButton";
 import Spacer from "../../components/Spacer";
 import { setStart } from "../../features/AppStart";
@@ -28,7 +27,7 @@ const Register = () => {
   const [numberPhone, setNumberPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errrorAccount, setErrrorAccount] = useState("");
+  const [errorAccount, setErrorAccount] = useState("");
   const [errorFullname, setErrorFullname] = useState("");
   const [errorNumberPhone, setErrorNumberPhone] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
@@ -43,7 +42,7 @@ const Register = () => {
   useEffect(() => {}, []);
   const handleRegist = () => {
     setErrorEmail(ValidateObj.CheckEmail(email));
-    setErrrorAccount(ValidateObj.CheckAccount(account));
+    setErrorAccount(ValidateObj.CheckAccount(account));
     setErrorNumberPhone(ValidateObj.checkNumberPhone(numberPhone));
     setErrorFullname(ValidateObj.checkFullName(fullname));
     setErrorPassword(ValidateObj.checkPassword(password));
@@ -52,7 +51,7 @@ const Register = () => {
       errorFullname +
       errorNumberPhone +
       errorPassword +
-      errrorAccount;
+      errorAccount;
     if (resutl === "") {
       const newData = {
         account,
@@ -60,6 +59,7 @@ const Register = () => {
         password,
         fullname,
         linkImg: avatar,
+        numberPhone,
       };
       dispatch(postUser(newData));
       Alert.alert("Đăng ký thành công", "Quay lại đăng nhập", [
@@ -70,11 +70,31 @@ const Register = () => {
       ]);
     }
   };
+  const HandleAccount = (text) => {
+    setAccount(text);
+    setErrorAccount("");
+  };
+  const HandleFullName = (text) => {
+    setFullname(text);
+    setErrorFullname("");
+  };
+  const HandlePassword = (text) => {
+    setPassword(text);
+    setErrorPassword("");
+  };
+  const HandleEmail = (text) => {
+    setEmail(text);
+    setErrorEmail("");
+  };
+  const HandleNumberPhone = (text) => {
+    setNumberPhone(text);
+    setErrorNumberPhone("");
+  };
   const ValidateEmail = () => {
     setErrorEmail(ValidateObj.CheckEmail(email));
   };
   const ValidateAccount = () => {
-    setErrrorAccount(ValidateObj.CheckAccount(account));
+    setErrorAccount(ValidateObj.CheckAccount(account));
   };
   const ValidateFullName = () => {
     setErrorFullname(ValidateObj.checkFullName(fullname));
@@ -99,17 +119,17 @@ const Register = () => {
       <TextInput
         onBlur={ValidateAccount}
         value={account}
-        onChangeText={(text) => setAccount(text)}
+        onChangeText={(text) => HandleAccount(text)}
         style={[
           styles.TextInput,
-          { borderColor: errrorAccount ? "red" : "#999" },
+          { borderColor: errorAccount ? "red" : "#999" },
         ]}
         placeholder="Nhập tên tài khoản"
       />
-      <Text style={styles.error}>{errrorAccount}</Text>
+      <Text style={styles.error}>{errorAccount}</Text>
       <TextInput
         value={fullname}
-        onChangeText={(text) => setFullname(text)}
+        onChangeText={(text) => HandleFullName(text)}
         style={[
           styles.TextInput,
           { borderColor: errorFullname ? "red" : "#999" },
@@ -122,7 +142,7 @@ const Register = () => {
         <TextInput
           keyboardType="number-pad"
           value={numberPhone}
-          onChangeText={(text) => setNumberPhone(text)}
+          onChangeText={(text) => HandleNumberPhone(text)}
           style={[
             styles.Number,
             { borderColor: errorNumberPhone ? "red" : "#999" },
@@ -138,7 +158,7 @@ const Register = () => {
       <Text style={styles.error}>{errorNumberPhone}</Text>
       <TextInput
         value={email}
-        onChangeText={(text) => setEmail(text)}
+        onChangeText={(text) => HandleEmail(text)}
         style={[styles.TextInput, { borderColor: errorEmail ? "red" : "#999" }]}
         onBlur={ValidateEmail}
         placeholder="Email"
@@ -146,7 +166,7 @@ const Register = () => {
       <Text style={styles.error}>{errorEmail}</Text>
       <TextInput
         value={password}
-        onChangeText={(text) => setPassword(text)}
+        onChangeText={(text) => HandlePassword(text)}
         style={[
           styles.TextInput,
           { borderColor: errorPassword ? "red" : "#999" },

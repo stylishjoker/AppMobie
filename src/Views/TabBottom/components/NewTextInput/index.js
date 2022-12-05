@@ -11,6 +11,7 @@ const NewTextInput = (props) => {
         onChangeText={(text) => props.callback(text)}
         style={styles.TextInput}
         editable={props.check}
+        keyboardType={props.type}
       />
     </View>
   );

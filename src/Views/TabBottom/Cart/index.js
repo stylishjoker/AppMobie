@@ -52,10 +52,10 @@ const ShoppingCart = ({ navigation }) => {
     setPayment(result);
   }, [product]);
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <SearchBar />
       <View style={styles.pay}>
-        <Text style={styles.Text}>Tổng thanh toán: {payment}</Text>
+        <Text style={styles.Text}>Tổng thanh toán: {payment} Đ</Text>
         <TouchableOpacity style={styles.button} onPress={() => setShow(!show)}>
           <Text style={styles.textBuy}>Thanh toán</Text>
         </TouchableOpacity>
@@ -73,7 +73,7 @@ const ShoppingCart = ({ navigation }) => {
             return (
               <OrderItem
                 key={item.id}
-                name={item.name}
+                name={item.namePro}
                 img={item.linkImg}
                 number={item.number}
                 price={item.price}
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#888",
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 20,
   },
   textBuy: {
     fontSize: 15,

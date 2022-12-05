@@ -27,6 +27,7 @@ const Profile = () => {
   const toggleModal = () => {
     setShow(!show);
   };
+  console.log(user);
   const Objs = [
     {
       id: 1,

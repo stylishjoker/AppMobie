@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
   },
   Text: {
     fontSize: 20,
+    paddingBottom: 10,
   },
   payment: {
     display: "flex",
@@ -107,6 +108,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#999",
     right: 0,
     margin: 5,
+    borderRadius: 5,
   },
 });
 export default Payment;

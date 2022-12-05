@@ -25,7 +25,7 @@ const OrderItem = (props) => {
         </View>
       </View>
       <TouchableOpacity style={styles.delete} onPress={props.callback}>
-        <Text>Xoa</Text>
+        <Text>Xóa</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     shadowRadius: 11.95,
 
     elevation: 18,
-    margin:5,
+    margin: 5,
   },
   content: {
     width: 200,
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     right: 10,
     padding: 10,
     backgroundColor: "#555",
+    borderRadius: 5,
   },
   name: {
     marginLeft: 20,
